@@ -52,4 +52,5 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("reset-button").addEventListener("click", resetTimer);
 
     updateDisplay();
+    
 });
