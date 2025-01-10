@@ -1,31 +1,332 @@
-#pomodoro-timer {
-    font-family: Arial, sans-serif;
+@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css");
+
+body {
+    margin: 0;
+    font-family: rounded;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    height: 100vh;
+    transition: background-color 0.5s;
+
+    
+    
+}
+
+.maindiv{
+    padding: 0;
+    margin: 0;
+    width: 500px;
+   
+}
+.topbar{
     text-align: center;
-    padding: 20px;
-    border: 2px solid #38b6ff;
-    border-radius: 8px;
-    width: 300px;
-    margin: 0 auto;
-    background-color: #d9d9d9;
+    line-height: 0px;
+    width: 100%;
+    color: white;
+    font-weight: 700;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.162);
+    margin-bottom: 20px;
+    
 }
 
-.timer-display {
-    font-size: 2em;
-    margin: 20px 0;
-    color: #38b6ff;
+.top-heading{
+    font-size: 20px;
+    font-weight: 700;
 }
 
-.timer-controls button {
-    font-size: 1em;
-    margin: 5px;
+
+
+.groupdiv{
+    width: 93%;
+    border-radius: 6px;
+    background: rgb(255 255 255 / 10%);
+    padding: 30px 20px ;
+   
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+.tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.tab {
+    color: white;
     padding: 10px 20px;
-    color: #ffffff;
-    background-color: #38b6ff;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    background-color: transparent;
+    font-size: 16px;
+}
+
+.tab.active {
+    background-color: rgb(0 0 0 / 15%);
+    color: white;
+    font-weight: bold;
+}
+
+.timer {
+    color: white;
+    font-size: 120px;
+    margin: 20px 0;
+    font-weight: bold;
+}
+
+.start-button {
+    padding: 20px 80px;
+    font-size: 18px;
+    color: #373737;
+    background-color: white;
+    border: none;
+    font-size: 22px;
+    font-weight: 700;
+    border-radius: 4px;
+    cursor: pointer;
+    box-shadow: rgba(235, 235, 235, 1) 0px 6px 0px;
+}
+
+.start-button:hover {
+    background-color: #ffffff;
+}
+
+.todo-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    
+}
+
+.add-task-button {
+    width: 100%;
+    margin-top: 20px;
+    padding: 20px 20px;
+    font-size: 16px;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.585);
+    background-color: rgba(168, 168, 168, 0.122);
+    border: 2px dashed #9595958f;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.add-task-button:hover {
+    background-color: rgba(168, 168, 168, 0.122);
+    color: rgba(255, 255, 255, 0.775);
+    border: 2px dashed #aaaaaa8f;
+    
+}
+
+.tasks1{
+    width: 100%;
+    display: flex;
+        -webkit-box-pack: justify;
+        justify-content: space-between;
+        -webkit-box-align: center;
+        align-items: center;
+        border-bottom: 2px solid rgba(255, 255, 255, 0.6);
+        padding-bottom: 0px;
+}
+.container1 h2{
+color: white;
+}
+.container2 i{
+color: white;
+font-size: 20px;
+background: rgb(255 255 255 / 10%);
+padding: 8px 15px ;
+border-radius: 5px;
+}
+.container2{
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+
+.table-head{
+    
+    line-height: 30px;
+    font-size: 18px;
+    font-weight: 700;
+    color: rgb(255, 255, 255);
+    border-bottom: 2px solid rgba(255, 255, 255, 0.766);
+    background-color: transparent;
+
+}
+
+
+
+
+
+table {
+   
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+   
+}
+
+
+
+
+td{
+    margin-top: 5px;
+    row-gap:20px;
+   
+    padding: 10px;
+    background: white;
+    font-size: 16px;
+    font-weight: 700;
+    
+    color: rgb(84, 84, 84);
+}
+
+/* table, th, td {
+    border: 1px solid #ccc;
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
+}
+
+th {
+    background-color: #f4f4f4;
+} */
+
+.action-buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.edit-btn, .delete-btn {
+    padding: 5px 10px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
 }
 
-.timer-controls button:hover {
-    background-color: #1e90ff;
+.edit-btn {
+    background-color: #ffc107;
+    color: black;
+}
+
+.edit-btn:hover {
+    background-color: #e0a800;
+}
+
+.delete-btn {
+    background-color: red;
+    color: white;
+}
+
+.delete-btn:hover {
+    background-color: #c82333;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+   
+    align-items: center;
+}
+
+.modal-content {
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
+    align-items: flex-start;
+    background: white;
+    padding: 20px;
+    border-radius: 5px;
+    width: 400px;
+    text-align: center;
+}
+
+.modal-content input,
+.modal-content textarea,
+.modal-content button {
+    margin: 10px 0;
+    padding: 10px;
+    width: 80%;
+}
+
+.modal-content{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+
+.input-window{
+    font-size: 22px;
+    
+    border: none;
+}
+.input-window:focus{
+    outline: none;
+}
+
+.input-window::placeholder {
+    color: rgb(40, 40, 40);
+    color: #717171;
+    font-weight: 700;
+    font-size: 22px;
+      
+  }
+
+.est-text{
+   
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    gap: 10px;
+}
+.modal-content .controls button {
+    width: auto;
+}
+
+.cancel-button {
+    background: #ccc;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.save-button {
+    background: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.cancel-button:hover {
+    background: #aaa;
+}
+
+.save-button:hover {
+    background: #218838;
 }
