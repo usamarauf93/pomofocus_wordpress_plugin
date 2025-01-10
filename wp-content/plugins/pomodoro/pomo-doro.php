@@ -91,6 +91,11 @@ add_shortcode('pomodoro_timer', 'pomodoro_timer_shortcode');
 function pomodoro_timer_activate() {
     // Perform tasks like creating default options or database setup
     // Example: add_option('pomodoro_timer_option', 'default_value');
+
+    add_option('my_plugin_option', 'default_value', '', 'yes');
+    error_log('Plugin activated, option added');
+
+
 }
 register_activation_hook(__FILE__, 'pomodoro_timer_activate');
 
@@ -100,5 +105,26 @@ register_activation_hook(__FILE__, 'pomodoro_timer_activate');
 function pomodoro_timer_deactivate() {
     // Clean up tasks like removing options or temporary data
     // Example: delete_option('pomodoro_timer_option');
+
+
+    delete_option('my_plugin_option');
+    error_log('Plugin deactivated, option removed');
+
+
+
 }
 register_deactivation_hook(__FILE__, 'pomodoro_timer_deactivate');
+
+
+// Use the option somewhere in your plugin
+function my_plugin_display_option() {
+    $option_value = get_option('my_plugin_option', 'default_value');
+    echo "The current value of the plugin option is: " . esc_html($option_value);
+}
+
+// Example usage on the admin dashboard
+add_action('admin_notices', function () {
+    echo '<div class="notice notice-success"><p>';
+    my_plugin_display_option();
+    echo '</p></div>';
+});
