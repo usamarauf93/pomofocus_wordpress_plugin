@@ -40,9 +40,9 @@ function pomodoro_timer_enqueue_assets() {
 
         // Pass settings to JS
         wp_localize_script('pomodoro-timer-script', 'PomodoroTimerSettings', array(
-            'primaryColor'    => '#38B6FF',
-            'secondaryColor'  => '#FFFFFF',
-            'backgroundColor' => '#D9D9D9',
+            'primaryColor'    => '#38b6ff',
+            'secondaryColor'  => '#ffffff',
+            'backgroundColor' => '#d9d9d9',
             // Add more settings as needed
         ));
     }
