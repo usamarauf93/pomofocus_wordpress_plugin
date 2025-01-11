@@ -27,7 +27,7 @@
         </div>
     
         <div class="todo-container">
-            <div class="tasks1"> 
+            <!-- <div class="tasks1"> 
                 <div class="container1">
                     <h2>Tasks</h2>
                 </div>
@@ -36,7 +36,7 @@
                 </div>
                  
                 
-            </div>
+            </div> -->
            
             
            

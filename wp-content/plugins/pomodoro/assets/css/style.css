@@ -15,7 +15,7 @@ body {
 }
 
 .maindiv{
-    padding: 0;
+    padding: 0px 0px 70px 0px;
     margin: 0;
     width: 500px;
    
@@ -60,9 +60,20 @@ body {
     padding: 10px 20px;
     cursor: pointer;
     border: none;
+    box-shadow: none;
     border-radius: 5px;
     background-color: transparent;
     font-size: 16px;
+}
+.tab:hover {
+    color: white;
+    
+    cursor: pointer;
+    border: none;
+    box-shadow: none;
+    border-radius: 5px;
+    background-color: transparent;
+  
 }
 
 .tab.active {
@@ -93,6 +104,11 @@ body {
 
 .start-button:hover {
     background-color: #ffffff;
+    color: black;
+}
+.start-button:active {
+    background-color: #ffffff;
+    color: black;
 }
 
 .todo-container {
@@ -154,10 +170,11 @@ border-radius: 5px;
 .table-head{
     
     line-height: 30px;
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 700;
     color: rgb(255, 255, 255);
-    border-bottom: 2px solid rgba(255, 255, 255, 0.766);
+  
+    /* border-bottom: 2px solid rgba(255, 255, 255, 0.766); */
     background-color: transparent;
 
 }
@@ -167,7 +184,7 @@ border-radius: 5px;
 
 
 table {
-   
+  
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
