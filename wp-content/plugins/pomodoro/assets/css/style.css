@@ -91,7 +91,7 @@ body {
 }
 
 .start-button {
-    padding: 10px 60px;
+    padding: 7px 65px;
     font-size: 18px;
     color: #373737;
     background-color: white;
@@ -250,6 +250,24 @@ th {
 .delete-btn:hover {
     background-color: #c82333;
 }
+
+
+.pomo-bar {
+    margin-top: 30px;
+    background: rgb(255 255 255 / 10%);
+    color: #fff;
+    padding: 18px 20px;
+    width: 100%;
+    font-size: 18px;
+    text-align: center;
+
+    display: flex;
+    justify-content: space-around;
+border-top: 1px solid white;
+  }
+
+
+
 
 .modal {
     display: none;

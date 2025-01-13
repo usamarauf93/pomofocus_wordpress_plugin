@@ -2,7 +2,12 @@ let intervalId;
 let isRunning = false;
 const tabs = document.querySelectorAll('.tab');
 const timerDisplay = document.querySelector('.timer');
-const startButton = document.querySelector('.start-button');
+const startButton = document.querySelector('.start-button' , function() {
+
+    startButton.style.backgroundColor = '#BA4949';
+    
+
+  });
 const taskModal = document.getElementById('taskModal');
 const addTaskButton = document.querySelector('.add-task-button');
 const cancelTaskButton = document.getElementById('cancelTask');
@@ -25,8 +30,22 @@ function loadTasks() {
 // Save tasks to localStorage
 function saveTasks(tasks) {
     localStorage.setItem('tasks', JSON.stringify(tasks));
+    updateCounter();
 }
+function updateCounter(){
+     // Retrieve the JSON string from localStorage
+     const tasksString = localStorage.getItem('tasks');
 
+     // Parse the string into an array (handle the case if it's null or empty)
+     const tasksArray = tasksString ? JSON.parse(tasksString) : [];
+ 
+     // Count how many objects are in the array
+     const tasksCount = tasksArray.length;
+ 
+     // Now you can do something with the count
+     console.log("Number of tasks:", tasksCount);
+     document.getElementById('taskCount').textContent = tasksCount;
+}
 // Render tasks in the table
 function renderTasks(tasks) {
     taskTableBody.innerHTML = '';
@@ -45,6 +64,7 @@ function renderTasks(tasks) {
         `;
         taskTableBody.appendChild(row);
     });
+    updateCounter();
 }
 
 // Handle tab switching

@@ -17,9 +17,9 @@
        
         <div class="groupdiv">
             <div class="tabs">
-                <button class="tab active" data-bg="#BA4949" data-time="25:00">Pomodoro</button>
-                <button class="tab" data-bg="#38858A" data-time="05:00">Short Break</button>
-                <button class="tab" data-bg="#397097" data-time="15:00">Long Break</button>
+                <button  id="red1" class="tab active" data-bg="#BA4949" data-time="25:00">Pomodoro</button>
+                <button  id="blue1" class="tab" data-bg="#38858A" data-time="05:00">Short Break</button>
+                <button  id="green11" class="tab" data-bg="#397097" data-time="15:00">Long Break</button>
             </div>
         
             <div class="timer">25:00</div>
@@ -56,6 +56,11 @@
     
             <button class="add-task-button"><i class="fa-solid fa-circle-plus"></i> Add Task</button>
     
+
+    <div class="pomo-bar">
+    <span>Pomos: 0/<span id="taskCount">126</span></span>
+    <span>Finish At 19:42 (68h)</span>
+  </div>
             
         </div>
     
