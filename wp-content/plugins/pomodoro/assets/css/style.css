@@ -57,7 +57,7 @@ body {
 
 .tab {
     color: white;
-    padding: 10px 20px;
+    padding: 0px 10px;
     cursor: pointer;
     border: none;
     box-shadow: none;
@@ -85,12 +85,13 @@ body {
 .timer {
     color: white;
     font-size: 120px;
-    margin: 20px 0;
+    line-height: 150px;
+    margin: 0px;
     font-weight: bold;
 }
 
 .start-button {
-    padding: 20px 80px;
+    padding: 10px 60px;
     font-size: 18px;
     color: #373737;
     background-color: white;
@@ -259,7 +260,7 @@ th {
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
     justify-content: center;
-   
+ 
     align-items: center;
 }
 
@@ -267,33 +268,36 @@ th {
     display: flex;
     justify-content: flex-start;
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
     background: white;
     padding: 20px;
     border-radius: 5px;
-    width: 400px;
+    
+    width: 500px;
     text-align: center;
 }
 
 .modal-content input,
 .modal-content textarea,
 .modal-content button {
-    margin: 10px 0;
+    margin: 3px 0;
     padding: 10px;
-    width: 80%;
+    width: 90%;
 }
 
-.modal-content{
+#taskNote{
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 10px;
+    gap: 5px;
+    border: 1px solid #cdcdcda8;
+    border-radius: 5px;
 }
 
 
 .input-window{
-    font-size: 22px;
-    
+    font-size: 20px;
+    text-align: center;
     border: none;
 }
 .input-window:focus{
@@ -301,10 +305,10 @@ th {
 }
 
 .input-window::placeholder {
-    color: rgb(40, 40, 40);
+    
     color: #717171;
     font-weight: 700;
-    font-size: 22px;
+    font-size: 20px;
       
   }
 
@@ -313,32 +317,57 @@ th {
     font-size: 16px;
     font-weight: 700;
 }
-
+.incdec{
+    font-size: 25px;
+    color: rgb(129, 129, 129);
+}
+#increasePomodoro , #decreasePomodoro{
+    background: transparent;
+}
 .controls {
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: row;
-    gap: 10px;
+   
+    
 }
 .modal-content .controls button {
-    width: auto;
+    width: 100%;
 }
 
-.cancel-button {
+
+.save_cancel_div{
+    display: flex;
+    flex-direction: row;
+}
+#modal_content_id #cancel_save_div{
+    display: flex;
+    flex-direction: row;
+}
+
+
+#cancelTask {
     background: #ccc;
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    width: 60%;
+    
 }
 
-.save-button {
+#saveTask {
     background: #28a745;
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
+
+    width: 60%;
+
+    
 }
+
 
 .cancel-button:hover {
     background: #aaa;
@@ -347,3 +376,15 @@ th {
 .save-button:hover {
     background: #218838;
 }
+
+
+
+
+/*
+
+Additional CSS
+
+
+*/
+
+

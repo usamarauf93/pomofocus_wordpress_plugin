@@ -60,9 +60,13 @@
         </div>
     
         <div class="modal" id="taskModal">
-            <div class="modal-content">
+            <div id="task_modal_wrap">
+
+
+
+            <div class="modal-content" id="modal_content_id">
                 
-                <input type="text" class="input-window" id="taskName" placeholder="What are you working on?" />
+                <input type="text" class="input-window" id="taskName" placeholder="What are you working on?"  autofocus />
 
 
                 <p class="est-text">Est Pomodoros:</p>
@@ -70,14 +74,26 @@
                     <!-- <label for="pomodoros">Est Pomodoros:</label> -->
                     
                    
-                    <button id="decreasePomodoro">-</button>
+                    <button id="decreasePomodoro"><i class="fa-solid fa-circle-minus incdec"></i></button>
                     <input type="number" id="pomodoros" value="1" min="1" readonly />
-                    <button id="increasePomodoro">+</button>
+                    <button id="increasePomodoro"><i class="fa-solid fa-circle-plus incdec"></i></button>
                 </div>
                 <textarea id="taskNote" placeholder="Add note"></textarea>
+                
+                <div class="save_cancel_div" id="cancel_save_div"></div>
                 <button class="cancel-button" id="cancelTask">Cancel</button>
                 <button class="save-button" id="saveTask">Save</button>
             </div>
+
+
+            </div>
+
+
+
+            
+
+
+
         </div>
 
 
