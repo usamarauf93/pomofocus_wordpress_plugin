@@ -2,17 +2,14 @@ let intervalId;
 let isRunning = false;
 const tabs = document.querySelectorAll('.tab');
 const timerDisplay = document.querySelector('.timer');
-const startButton = document.querySelector('.start-button' , function() {
-
-    startButton.style.backgroundColor = '#BA4949';
-    
-
-  });
+const startButton = document.querySelector('.start-button');
 const taskModal = document.getElementById('taskModal');
 const addTaskButton = document.querySelector('.add-task-button');
+
 const cancelTaskButton = document.getElementById('cancelTask');
 const saveTaskButton = document.getElementById('saveTask');
 const taskNameInput = document.getElementById('taskName');
+
 const pomodorosInput = document.getElementById('pomodoros');
 const taskNoteInput = document.getElementById('taskNote');
 const decreasePomodoro = document.getElementById('decreasePomodoro');
@@ -20,6 +17,7 @@ const increasePomodoro = document.getElementById('increasePomodoro');
 const taskTableBody = document.getElementById('taskTableBody');
 
 let editingRow = null;
+
 
 // Load tasks from localStorage
 function loadTasks() {
@@ -29,6 +27,7 @@ function loadTasks() {
 
 // Save tasks to localStorage
 function saveTasks(tasks) {
+    console.log('save task clicked')
     localStorage.setItem('tasks', JSON.stringify(tasks));
     updateCounter();
 }
@@ -45,6 +44,12 @@ function updateCounter(){
      // Now you can do something with the count
      console.log("Number of tasks:", tasksCount);
      document.getElementById('taskCount').textContent = tasksCount;
+
+
+    
+
+
+
 }
 // Render tasks in the table
 function renderTasks(tasks) {
@@ -73,6 +78,9 @@ tabs.forEach(tab => {
         tabs.forEach(t => t.classList.remove('active'));
         tab.classList.add('active');
         document.body.style.backgroundColor = tab.getAttribute('data-bg');
+        console.log(startButton.id);
+        document.getElementById(startButton.id).style.color = tab.getAttribute('data-btncolor');
+
         timerDisplay.textContent = tab.getAttribute('data-time');
         clearInterval(intervalId);
         startButton.textContent = 'START';
@@ -155,6 +163,10 @@ saveTaskButton.addEventListener('click', () => {
     taskNoteInput.value = '';
 });
 
+
+
+
+
 // Decrease pomodoros
 decreasePomodoro.addEventListener('click', () => {
     if (pomodorosInput.value > 1) {
@@ -193,3 +205,31 @@ taskTableBody.addEventListener('click', (event) => {
 
 // Load tasks on page load
 document.addEventListener('DOMContentLoaded', loadTasks);
+
+
+
+
+
+
+
+
+document.addEventListener("DOMContentLoaded", function() {
+    // Get references to the necessary elements
+    const gearIcon = document.querySelector('.fa-gear');
+    const closeIcon = document.querySelector('.fa-xmark');
+    const popup = document.getElementById('setting_content_id');
+  
+    // Show the popup when the gear icon is clicked
+    gearIcon.addEventListener('click', function() {
+
+        // alert("You clicked on Setting!");
+
+      popup.style.display = 'flex';  // You can change this to a different style or animation if needed
+
+    });
+  
+    // Hide the popup when the x-mark icon is clicked
+    closeIcon.addEventListener('click', function() {
+      popup.style.display = 'none';   // You can change this to a fade-out or another effect if desired
+    });
+  });

@@ -28,6 +28,13 @@ function pomodoro_timer_enqueue_assets() {
             array(), // No dependencies
             '1.0.0'  // Version number
         );
+            // Enqueue the settings-specific CSS.
+        wp_enqueue_style(
+            'pomodoro-timer-settings-style',  // Changed handle to be unique
+            plugin_dir_url(__FILE__) . 'assets/css/settingsCss.css',
+            array(), // No dependencies
+            '1.0.0'
+        );
 
         // Enqueue the JS file
         wp_enqueue_script(
