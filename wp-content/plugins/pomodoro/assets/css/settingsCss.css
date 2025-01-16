@@ -1,4 +1,4 @@
-.setting-content {
+    .setting-content {
     background-color: white;
     border-radius: 5px;
     }
@@ -32,17 +32,7 @@
     -webkit-box-align: center;
     align-items: center;
     }
-    .switch-circle{
-       
-            position: absolute;
-            left: 2px;
-            width: 28px;
-            height: 28px;
-            border-radius: 50px;
-            background-color: white;
-            box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 1px;
-        
-    }
+
     .start-pomos {
     cursor: pointer;
     width: 60px;
@@ -171,15 +161,7 @@
     box-sizing: border-box;
     width: 70px;
     }
-    .switch-circle {
-    position: absolute;
-    left: 2px;
-    width: 28px;
-    height: 28px;
-    border-radius: 50px;
-    background-color: white;
-    box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 1px;
-    }
+
     .heading-aligned-spacing{
     color: rgb(85, 85, 85);
     font-weight: bold;
@@ -304,64 +286,61 @@
     }
 
 
-    
-
-
-
-
-
-    .fmzeWk {
-        padding: 12px 0px;
-        min-height: 30px;
-        display: flex
-    ;
-        flex-direction: column;
-    }
-    
-    
-    .iMkpqL {
-        width: 100%;
-        display: flex
-    ;
-        -webkit-box-pack: justify;
-        justify-content: space-between;
-        -webkit-box-align: center;
-        align-items: center;
-    }
-    
-    .lbfbVf {
-        display: inline-block;
-    }
-    
-    
-    .fUTeNZ {
-        color: rgb(85, 85, 85);
-        font-weight: bold;
-        display: flex
-    ;
-        -webkit-box-align: center;
-        align-items: center;
-    }
-    
-    .gRtxkR {
-        cursor: pointer;
-        width: 60px;
-        height: 32px;
-        border-radius: 50px;
-        background-color: rgb(204, 204, 204);
-        position: relative;
-        display: inline-flex
-    ;
-        -webkit-box-align: center;
-        align-items: center;
-    }
-    
-    .hRPoCw {
-        position: absolute;
-        left: 2px;
-        width: 28px;
-        height: 28px;
-        border-radius: 50px;
-        background-color: white;
-        box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 1px;
-    }
+    /* Container for the toggle switch */
+.switch-toggle {
+    position: relative;
+    display: inline-block;
+    width: 60px;  /* Adjust as needed */
+    height: 34px; /* Adjust as needed */
+  }
+  
+  /* Hide the default checkbox */
+  .switch-toggle .input-checkbox {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  
+  /* The slider or circle element */
+  .switch-circle {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;  /* Default color */
+    transition: .4s;
+  }
+  
+  /* Circle inside (if needed, or adjust based on your design) */
+  .switch-circle:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .4s;
+  }
+  
+  /* Toggle checked state – note the sibling selector */
+  /* Ensure your HTML structure allows for the adjacent sibling combinator */
+  .input-checkbox:checked + .switch-circle {
+    background-color: #2196F3;
+  }
+  
+  /* Move the inner circle when checked */
+  .input-checkbox:checked + .switch-circle:before {
+    transform: translateX(26px);
+  }
+  
+  /* Optional: styling for a rounded toggle */
+  .switch-circle {
+    border-radius: 34px;
+  }
+  
+  .switch-circle:before {
+    border-radius: 50%;
+  }
