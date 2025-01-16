@@ -69,6 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
         settings.autoCheckTasks = document.getElementById('autoCheckTasksToggle')?.parentElement.classList.contains('active') || false;
         settings.autoSwitchTasks = document.getElementById('autoSwitchTasksToggle')?.parentElement.classList.contains('active') || false;
         settings.darkModeToggle = document.getElementById('darkModeToggle')?.parentElement.classList.contains('active') || false;
+        settings.repeatAlarmSound = document.getElementById('repeatSound')?.parentElement.classList.contains('active') || false;
         
         // Sound settings
         settings.alarmSound = document.getElementById('alarmSound').value;
@@ -78,6 +79,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Notification settings
         settings.reminderFrequency = document.getElementById('reminderFrequency')?.value || '';
+
+
+
+        //repeat alarm Sound
+        settings.repeatAlarmSound = document.getElementById('repeatSound')?.value || '';
 
         // Color Theme setting:
         // Get the selected radio button from the color-theme group
