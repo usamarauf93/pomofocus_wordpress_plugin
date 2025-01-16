@@ -40,7 +40,7 @@
               <span class="heading-aligned-spacing">Auto Start Breaks</span>
             </div>
             <label class="switch-toggle">
-              <input type="checkbox" id="auto-start-break" class="input-checkbox">
+              <input type="checkbox" id="autoStartBreaksToggle" class="input-checkbox">
               <span class="switch-circle"></span>
             </label>
           </div>
@@ -54,7 +54,7 @@
             </div>
             <label class="switch-toggle">
               <!-- Note: Added the checkbox input (if you need to toggle this as well) -->
-              <input type="checkbox" id="auto-start-pomodoro" class="input-checkbox">
+              <input type="checkbox" id="autoStartPomodorosToggle" class="input-checkbox">
               <span class="switch-circle"></span>
             </label>
           </div>
@@ -84,7 +84,7 @@
               <span class="heading-aligned-spacing">Auto Check Tasks</span>
             </div>
             <label class="switch-toggle">
-              <input type="checkbox" id="auto-check-tasks" class="input-checkbox">
+              <input type="checkbox" id="autoCheckTasksToggle" class="input-checkbox">
               <span class="switch-circle"></span>
             </label>
           </div>
@@ -95,18 +95,7 @@
               <span class="heading-aligned-spacing">Auto Switch Tasks</span>
             </div>
             <label class="switch-toggle">
-              <input type="checkbox" id="auto-switch-tasks" class="input-checkbox">
-              <span class="switch-circle"></span>
-            </label>
-          </div>
-        </div>
-        <div class="time-mins-section">
-          <div class="wrapper-spacing">
-            <div class="top-headingz">
-              <span class="heading-aligned-spacing">Auto Switch Tasks</span>
-            </div>
-            <label class="switch-toggle">
-              <input type="checkbox" id="auto-switch-tasks2" class="input-checkbox">
+              <input type="checkbox" id="autoSwitchTasksToggle" class="input-checkbox">
               <span class="switch-circle"></span>
             </label>
           </div>
@@ -135,12 +124,13 @@
               </select>
             </div>
           </div>
-          <div class="progress-bar-alignment">
+         <!-- Second Slider (e.g. Alarm Sound) -->
+         <div class="progress-bar-alignment">
             <div>
-              <div>50</div>
-              <input type="range" min="0" max="100" class="progress-bar-control" id="myRange" value="50">
+               <div id="alarm-sound-value">50</div>
+               <input type="range" min="0" max="100" class="progress-bar-control" id="myRange" value="50">
             </div>
-          </div>
+         </div>
           <div class="repeat-counter">
             repeat
             <input type="number" min="1" step="1" class="counter-input-field repeat-input-field" value="1">
@@ -163,7 +153,7 @@
           </div>
           <div class="progress-bar-alignment">
             <div>
-              <div>51</div>
+              <div id='ticking-sound-value'>51</div>
               <input type="range" min="0" max="100" class="progress-bar-control" id="myRange2" value="51">
             </div>
           </div>
@@ -178,16 +168,29 @@
       </div>
       <div class="theme-settings">
         <div class="time-mins-section">
-          <div class="wrapper-spacing">
+        <div class="wrapper-spacing">
             <div class="top-headingz">
-              <span class="heading-aligned-spacing">Color Themes</span>
+               <span class="heading-aligned-spacing">Color Themes</span>
             </div>
             <div class="colors-parent-div">
-              <div class="color-child1"></div>
-              <div class="color-child2"></div>
-              <div class="color-child3"></div>
+               <!-- Radio Button for color theme 1 -->
+               <label>
+                  <input type="radio" name="color-theme" value="theme1" id="theme1">
+                  <span class="color-radio color-child1"></span>
+               </label>
+               <!-- Radio Button for color theme 2 -->
+               <label>
+                  <input type="radio" name="color-theme" value="theme2" id="theme2">
+                  <span class="color-radio color-child2"></span>
+               </label>
+               <!-- Radio Button for color theme 3 -->
+               <label>
+                  <input type="radio" name="color-theme" value="theme3" id="theme3">
+                  <span class="color-radio color-child3"></span>
+               </label>
             </div>
-          </div>
+         </div>
+
         </div>
         <div class="time-mins-section">
           <div class="wrapper-spacing">
@@ -195,7 +198,7 @@
               <span class="heading-aligned-spacing">Hour Format</span>
             </div>
             <div class="dropdown-item-select">
-              <select class="dropdown-item-select-inner">
+              <select id="timeFormat" class="dropdown-item-select-inner">
                 <option>24-hour</option>
                 <option>12-hour</option>
               </select>
@@ -214,15 +217,15 @@
           </div>
         </div>
         <div class="time-mins-section">
-          <div class="wrapper-spacing">
-            <div class="top-headingz">
-              <span class="heading-aligned-spacing">Small Window</span>
+            <div class="wrapper-spacing">
+               <div class="top-headingz">
+                  <span class="heading-aligned-spacing">Small Window</span>
+               </div>
+               <button class="okay-bottom-bar" id="openSmallWindow">
+                  Open <i class="fa-solid fa-up-right-from-square"></i>
+               </button>
             </div>
-            <button class="okay-bottom-bar">
-              Open <i class="fa-solid fa-up-right-from-square"></i>
-            </button>
-          </div>
-        </div>
+         </div>
       </div>
       
       <div class="divider-line"></div>
@@ -238,20 +241,7 @@
               <span class="heading-aligned-spacing">Reminder</span>
             </div>
             <div class="dropdown-item-select">
-              <input type="number" min="1" step="1" class="counter-input-field reminder-input-counter" value="5"> min
-            </div>
-          </div>
-        </div>
-        <div class="time-mins-section">
-          <div class="wrapper-spacing">
-            <div class="top-headingz">
-              <span class="heading-aligned-spacing">
-                Mobile Alarm
-                <i class="fa-solid fa-circle-info"></i>
-              </span>
-            </div>
-            <div class="dropdown-item-select">
-              <button class="okay-bottom-bar">+ Add this device</button>
+              <input type="number" min="1" step="1" id="reminderFrequency" class="counter-input-field reminder-input-counter" value="5"> min
             </div>
           </div>
         </div>
