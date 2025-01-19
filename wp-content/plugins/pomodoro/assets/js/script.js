@@ -44,7 +44,7 @@ function loadTasks() {
 
 // Save tasks to localStorage
 function saveTasks(tasks) {
-    console.log('save task clicked')
+    // console.log('save task clicked')
     localStorage.setItem('tasks', JSON.stringify(tasks));
     updateCounter();
 }
@@ -59,9 +59,11 @@ function updateCounter(){
      const tasksCount = tasksArray.length;
  
      // Now you can do something with the count
-     console.log("Number of tasks:", tasksCount);
+    //  console.log("Number of tasks:", tasksCount);
      document.getElementById('taskCount').textContent = tasksCount;
      taskModal.style.display = 'none';
+    // console.log(tasksCount,timerDisplay.textContent);
+     updateFinishAt(tasksCount, timerDisplay.textContent);
 
 }
 // Render tasks in the table
@@ -133,7 +135,7 @@ document.querySelectorAll('.tab').forEach(tab => {
        
 
         
-        console.log(formattedTimerType);
+        // console.log(formattedTimerType);
         const savedSettings = JSON.parse(localStorage.getItem('pomodoroSettings')) || {
             pomodoro: 25,
             shortBreak: 5,
@@ -167,7 +169,7 @@ function startTimer(duration,activeTimerType) {
         } else {
             seconds--;
         }
-        console.log(timerDisplay.getAttribute('data-tabActive'));
+        // console.log(timerDisplay.getAttribute('data-tabActive'));
         if(timerDisplay.getAttribute('data-tabActive') == activeTimerType ){
             timerDisplay.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
         }else{
@@ -281,5 +283,28 @@ taskTableBody.addEventListener('click', (event) => {
         taskModal.style.display = 'flex';
     }
 });
+function updateFinishAt(taskPomodoros, pomodoroDuration) {
+    // Convert pomodoroDuration (HH:MM) to total minutes
+    const [minutes, seconds] = pomodoroDuration.split(':').map(Number);
+    const totalPomodoroMinutes = minutes;
+
+    // Calculate total time required based on the number of pomodoros
+    const totalMinutes = taskPomodoros * totalPomodoroMinutes;
+
+    // Get the current time
+    const currentTime = new Date();
+
+    // Calculate finish time by adding total minutes to the current time
+    currentTime.setMinutes(currentTime.getMinutes() + totalMinutes);
+
+    // Format the finish time into a readable format
+    const finishHours = currentTime.getHours();
+    const finishMinutes = currentTime.getMinutes();
+    const formattedFinishTime = `${String(finishHours).padStart(2, '0')}:${String(finishMinutes).padStart(2, '0')}`;
+
+    // Display total minutes and finish time
+    document.getElementById('finishAt').textContent = `Finish At (${formattedFinishTime})`; // Display the finish time
+}
+
 // Load tasks on page load
 document.addEventListener('DOMContentLoaded', loadTasks);

@@ -41,7 +41,7 @@
             <button class="add-task-button"><i class="fa-solid fa-circle-plus"></i> Add Task</button>
             <div class="pomo-bar">
                <span>Pomos: 0/<span id="taskCount">126</span></span>
-               <span>Finish At (<span id="minsCount">222</span>m)</span>
+               <span id="finishAt"></span>
             </div>
          </div>
          <div class="modal" id="taskModal">
