@@ -28,11 +28,34 @@ function pomodoro_timer_enqueue_assets() {
             array(), // No dependencies
             '1.0.0'  // Version number
         );
+            // Enqueue the settings-specific CSS.
+
+
+
+        wp_enqueue_style(
+            'pomodoro-timer-settings-style',  // Changed handle to be unique
+            plugin_dir_url(__FILE__) . 'assets/css/settingsCss.css',
+            array(), // No dependencies
+            '1.0.0'
+        );
+
+
+
+     
+
 
         // Enqueue the JS file
         wp_enqueue_script(
             'pomodoro-timer-script',
             plugin_dir_url(__FILE__) . 'assets/js/script.js',
+            array('jquery'), // Dependencies
+            '1.0.0', // Version number
+            true      // Load in footer
+        );
+        // Enqueue the JS file
+        wp_enqueue_script(
+            'pomodoro-timer-script2',
+            plugin_dir_url(__FILE__) . 'assets/js/setting_view.js',
             array('jquery'), // Dependencies
             '1.0.0', // Version number
             true      // Load in footer
@@ -91,6 +114,11 @@ add_shortcode('pomodoro_timer', 'pomodoro_timer_shortcode');
 function pomodoro_timer_activate() {
     // Perform tasks like creating default options or database setup
     // Example: add_option('pomodoro_timer_option', 'default_value');
+
+    add_option('my_plugin_option', 'default_value', '', 'yes');
+    error_log('Plugin activated, option added');
+
+
 }
 register_activation_hook(__FILE__, 'pomodoro_timer_activate');
 
@@ -100,5 +128,26 @@ register_activation_hook(__FILE__, 'pomodoro_timer_activate');
 function pomodoro_timer_deactivate() {
     // Clean up tasks like removing options or temporary data
     // Example: delete_option('pomodoro_timer_option');
+
+
+    delete_option('my_plugin_option');
+    error_log('Plugin deactivated, option removed');
+
+
+
 }
 register_deactivation_hook(__FILE__, 'pomodoro_timer_deactivate');
+
+
+// Use the option somewhere in your plugin
+function my_plugin_display_option() {
+    $option_value = get_option('my_plugin_option', 'default_value');
+    echo "The current value of the plugin option is: " . esc_html($option_value);
+}
+
+// Example usage on the admin dashboard
+add_action('admin_notices', function () {
+    echo '<div class="notice notice-success"><p>';
+    my_plugin_display_option();
+    echo '</p></div>';
+});
