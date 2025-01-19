@@ -22,7 +22,7 @@ const taskTableBody = document.getElementById('taskTableBody');
 const settingsButton = document.getElementById('settingsButton');
 // const settingsModal = document.getElementById('settingsModal');
 const closeSettingsModal = document.getElementById('closeSettingsModal');
-
+var formattedTimerType = '';
 
 let editingRow = null;
 
@@ -95,7 +95,6 @@ function loadSettings() {
 
     const activeTab = document.querySelector('.tab.active');
     const timerDisplay = document.getElementById('timerDisplay');
-
     if (activeTab) {
         const activeTimerType = activeTab.textContent.trim().replace(/\s+/g, '').toLowerCase(); // Determine active tab type
         const timeValue = savedSettings[activeTimerType] || defaultSettings[activeTimerType];
@@ -128,7 +127,11 @@ document.querySelectorAll('.tab').forEach(tab => {
 
         // Update timer and background based on tab settings
         const timerType = tab.textContent.trim().replace(/\s+/g, '');
-        const formattedTimerType = timerType.charAt(0).toLowerCase() + timerType.slice(1);
+       formattedTimerType = timerType.charAt(0).toLowerCase() + timerType.slice(1);
+
+        startButton.setAttribute('data-tabActive', formattedTimerType);
+       
+
         
         console.log(formattedTimerType);
         const savedSettings = JSON.parse(localStorage.getItem('pomodoroSettings')) || {
@@ -138,14 +141,17 @@ document.querySelectorAll('.tab').forEach(tab => {
         };
         const timerValue = savedSettings[formattedTimerType] || 25; // Default to 25 minutes for Pomodoro if not found
         const timerDisplay = document.getElementById('timerDisplay');
-
+        timerDisplay.setAttribute('data-tabActive', formattedTimerType);
         timerDisplay.textContent = formatTime(timerValue);
         document.body.style.backgroundColor = tab.getAttribute('data-bg');
+        clearInterval(intervalId);
+        startButton.textContent = 'START';
+        isRunning = false;
     });
 });
 
 // Start the timer
-function startTimer(duration) {
+function startTimer(duration,activeTimerType) {
     let [minutes, seconds] = duration.split(':').map(Number);
 
     intervalId = setInterval(() => {
@@ -161,13 +167,20 @@ function startTimer(duration) {
         } else {
             seconds--;
         }
-
-        timerDisplay.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+        console.log(timerDisplay.getAttribute('data-tabActive'));
+        if(timerDisplay.getAttribute('data-tabActive') == activeTimerType ){
+            timerDisplay.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+        }else{
+            startButton.textContent = 'START';
+            timerDisplay.textContent = savedSettings[formattedTimerType];
+        }
     }, 1000);
 }
 
 // Handle start/pause button
 startButton.addEventListener('click', () => {
+    const activeTabType = startButton.getAttribute('data-tabActive'); // Get the active tab type
+    // console.log(activeTabType);
     if (isRunning) {
         clearInterval(intervalId);
         startButton.textContent = 'START';
@@ -175,7 +188,7 @@ startButton.addEventListener('click', () => {
     } else {
         isRunning = true;
         startButton.textContent = 'PAUSE';
-        startTimer(timerDisplay.textContent);
+        startTimer(timerDisplay.textContent,activeTabType);
     }
 });
 
