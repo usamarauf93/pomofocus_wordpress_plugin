@@ -1,7 +1,7 @@
 <div class="settingModal">
   <div class="top-setting-div">
     <div class="settingP">
-      Setting <i class="fa-solid fa-xmark"></i>
+      Setting <i class="fa-solid fa-xmark" id="closeSettingsModal"></i>
     </div>
   </div>
   <div class="modal-hero-section">
@@ -127,7 +127,7 @@
          <!-- Second Slider (e.g. Alarm Sound) -->
          <div class="progress-bar-alignment">
             <div>
-               <div id="alarm-sound-value">50</div>
+               <div id="alarmSoundDisplay">50</div>
                <input type="range" min="0" max="100" class="progress-bar-control" id="myRange" value="50">
             </div>
          </div>

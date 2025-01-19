@@ -10,7 +10,7 @@
       <div class="maindiv">
          <div class="topbar">
             <p class="top-heading"><i class="fa-solid fa-circle-check"></i> Pomodoro</p>
-            <i class="fa-solid fa-gear"></i>
+            <i class="fa-solid fa-gear"  id="settingsButton"></i>
          </div>
          <div class="groupdiv">
             <div class="tabs">
@@ -18,7 +18,8 @@
                <button  id="blue1" class="tab" data-btncolor="#38858A" data-bg="#38858A" data-time="05:00">Short Break</button>
                <button  id="green11" class="tab" data-btncolor="#397097" data-bg="#397097" data-time="15:00">Long Break</button>
             </div>
-            <div class="timer">25:00</div>
+            <div class="timer" id="timerDisplay">25:00</div>
+
             <div class="btn_nxt">
                <button id="start-button" class="start-button" style="color: #BA4949;">START</button>
                <i class="fa-solid fa-forward-step nextforward"></i>
@@ -42,27 +43,7 @@
                <span>Pomos: 0/<span id="taskCount">126</span></span>
                <span>Finish At (<span id="minsCount">222</span>m)</span>
             </div>
-            <div class="setting-content" id="setting_content_id" style="display: none;">
-               <?php include 'settings_view.php'; ?>
-            </div>
          </div>
-         <!-- <div class="modal" id="settingModal">
-            <div id="task_modal_wrap">
-               <div class="modal-content" id="modal_content_id">
-                  <input type="text" class="input-window" id="taskName" placeholder="What are you working on?"  autofocus />
-                  <p class="est-text">Est Pomodoros:</p>
-                  <div class="controls">
-                     <button id="decreasePomodoro"><i class="fa-solid fa-circle-minus incdec"></i></button>
-                     <input type="number" id="pomodoros" value="1" min="1" readonly />
-                     <button id="increasePomodoro"><i class="fa-solid fa-circle-plus incdec"></i></button>
-                  </div>
-                  <textarea id="taskNote" placeholder="Add note"></textarea>
-                  <div class="save_cancel_div" id="cancel_save_div"></div>
-                  <button class="cancel-button" id="cancelTask">Cancel</button>
-                  <button class="save-button" id="saveTask">Save1</button>
-               </div>
-            </div>
-         </div> -->
          <div class="modal" id="taskModal">
             <div id="task_modal_wrap">
                <div class="modal-content" id="modal_content_id">
@@ -77,6 +58,15 @@
                   <div class="save_cancel_div" id="cancel_save_div"></div>
                   <button class="cancel-button" id="cancelTask">Cancel</button>
                   <button class="save-button" id="saveTask">Save2</button>
+               </div>
+            </div>
+         </div>
+
+           <!-- Settings Modal -->
+         <div class="modal" id="settingsModal" style="display: none;">
+            <div id="settings_modal_wrap">
+               <div class="modal-content" id="settings_content_id">
+                  <?php include 'settings_view.php'; ?>
                </div>
             </div>
          </div>

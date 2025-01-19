@@ -368,8 +368,8 @@
   
   /* When the radio is checked, add a border or other visual indicator */
   input[type="radio"][name="color-theme"]:checked + .color-radio {
-    width: 20px;
-    height: 20px;
+    width: 40px;
+    height: 40px;
   }
   
 

@@ -2,7 +2,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     const saveSettingsButton = document.getElementById('saveSettingsButton');
     const openButton = document.getElementById('openSmallWindow');
-  
+    loadSettingsFromStorage();
     openButton.addEventListener('click', () => {
       // Get the URL of the current page
       const currentPage = window.location.href;
@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Alarm Sound Slider
     const alarmSoundSlider = document.getElementById('myRange');
-    const alarmSoundDisplay = document.getElementById('alarm-sound-value');
+    const alarmSoundDisplay = document.getElementById('alarmSoundDisplay');
 
     if (alarmSoundSlider && alarmSoundDisplay) {
         alarmSoundSlider.addEventListener('input', function() {
@@ -102,5 +102,66 @@ document.addEventListener('DOMContentLoaded', () => {
         // Save settings to localStorage
         localStorage.setItem('pomodoroSettings', JSON.stringify(settings));
         alert('Settings saved successfully!');
+        settingsModal.style.display = 'none';
     });
+    function loadSettingsFromStorage(){
+        const defaultSettings = {
+            pomodoro: 25,
+            shortBreak: 5,
+            longBreak: 15,
+            longBreakInterval: 4,
+            autoStartBreaks: false,
+            autoStartPomodoros: false,
+            autoCheckTasks: false,
+            autoSwitchTasks: false,
+            darkModeToggle: false,
+            repeatAlarmSound: false,
+            alarmSound: 'default',
+            tickingSoundVolume: 50,
+            tickingSound: 'default',
+            reminderFrequency: '',
+            colorTheme: 'theme1', // Default theme
+            timeFormat: '24h' // Default format
+        };
+        const savedSettings = JSON.parse(localStorage.getItem('pomodoroSettings')) || defaultSettings;
+        console.log(savedSettings);
+        // Apply settings to form fields
+        document.getElementById('pomodoroTime').value = savedSettings.pomodoro;
+        document.getElementById('shortBreakTime').value = savedSettings.shortBreak;
+        document.getElementById('longBreakTime').value = savedSettings.longBreak;
+        document.getElementById('longBreakInterval').value = savedSettings.longBreakInterval;
+        // Apply toggles with 'active' class and 'checked' property
+        const toggleElements = [
+            { id: 'autoStartBreaksToggle', value: savedSettings.autoStartBreaks },
+            { id: 'autoStartPomodorosToggle', value: savedSettings.autoStartPomodoros },
+            { id: 'autoCheckTasksToggle', value: savedSettings.autoCheckTasks },
+            { id: 'autoSwitchTasksToggle', value: savedSettings.autoSwitchTasks },
+            { id: 'darkModeToggle', value: savedSettings.darkModeToggle }
+        ];
+
+        toggleElements.forEach(toggle => {
+            const toggleElement = document.getElementById(toggle.id);
+            const parentElement = toggleElement.parentElement;
+            parentElement.classList.toggle('active', toggle.value);
+            toggleElement.checked = toggle.value;
+        });
+        document.getElementById('repeatSound').value =  savedSettings.repeatAlarmSound;
+    
+        document.getElementById('alarmSound').value = savedSettings.alarmSound;
+        document.getElementById('tickingSound').value = savedSettings.tickingSound;
+        document.getElementById('reminderFrequency').value = savedSettings.reminderFrequency;
+    
+        // Apply selected color theme
+        const colorThemeRadios = document.getElementsByName('color-theme');
+        for (const radio of colorThemeRadios) {
+            radio.checked = radio.value === savedSettings.colorTheme;
+        }
+    
+        document.getElementById('timeFormat').value = savedSettings.timeFormat;
+    
+        // Set volume display
+        const alarmSoundDisplay = document.getElementById('alarmSoundDisplay');
+        alarmSoundDisplay.innerText = savedSettings.tickingSoundVolume;
+        document.getElementById('myRange').value = saveSettingsButton.tickingSoundVolume;
+    }
 });

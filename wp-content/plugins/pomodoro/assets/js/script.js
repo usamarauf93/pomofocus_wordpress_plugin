@@ -1,5 +1,6 @@
 let intervalId;
 let isRunning = false;
+let activeTimerType = 'pomodoro'; // Default active timer
 const tabs = document.querySelectorAll('.tab');
 const timerDisplay = document.querySelector('.timer');
 const startButton = document.querySelector('.start-button');
@@ -12,17 +13,33 @@ const taskNameInput = document.getElementById('taskName');
 
 const pomodorosInput = document.getElementById('pomodoros');
 const taskNoteInput = document.getElementById('taskNote');
-const decreasePomodoro = document.getElementById('decreasePomodoro');
+const decreasePomodoro = document.getElementById('decreasePomodoro');   
 const increasePomodoro = document.getElementById('increasePomodoro');
 const taskTableBody = document.getElementById('taskTableBody');
 
+
+// settings modal and button element 
+const settingsButton = document.getElementById('settingsButton');
+// const settingsModal = document.getElementById('settingsModal');
+const closeSettingsModal = document.getElementById('closeSettingsModal');
+
+
 let editingRow = null;
 
+ // Open settings modal
+ settingsButton.addEventListener('click', () => {
+    settingsModal.style.display = 'flex';
+ });
 
+
+ closeSettingsModal.addEventListener('click', (e) => {
+    settingsModal.style.display = 'none';
+ });
 // Load tasks from localStorage
 function loadTasks() {
     const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
     renderTasks(tasks);
+    loadSettings();
 }
 
 // Save tasks to localStorage
@@ -44,11 +61,7 @@ function updateCounter(){
      // Now you can do something with the count
      console.log("Number of tasks:", tasksCount);
      document.getElementById('taskCount').textContent = tasksCount;
-
-
-    
-
-
+     taskModal.style.display = 'none';
 
 }
 // Render tasks in the table
@@ -71,20 +84,63 @@ function renderTasks(tasks) {
     });
     updateCounter();
 }
+function loadSettings() {
+    const defaultSettings = {
+        pomodoro: 25,
+        shortBreak: 5,
+        longBreak: 15,
+    };
 
-// Handle tab switching
-tabs.forEach(tab => {
+    const savedSettings = JSON.parse(localStorage.getItem('pomodoroSettings')) || defaultSettings;
+
+    const activeTab = document.querySelector('.tab.active');
+    const timerDisplay = document.getElementById('timerDisplay');
+
+    if (activeTab) {
+        const activeTimerType = activeTab.textContent.trim().replace(/\s+/g, '').toLowerCase(); // Determine active tab type
+        const timeValue = savedSettings[activeTimerType] || defaultSettings[activeTimerType];
+
+        // Update the timer display
+        timerDisplay.textContent = formatTime(timeValue);
+        document.body.style.backgroundColor = activeTab.getAttribute('data-bg');
+    } else {
+        // If no tab is active, set to default Pomodoro
+        timerDisplay.textContent = formatTime(defaultSettings.pomodoro);
+        document.body.style.backgroundColor = '#BA4949'; // Default background color for Pomodoro
+    }
+}
+
+// Utility function to format time in MM:SS
+function formatTime(minutes) {
+    return `${String(minutes).padStart(2, '0')}:00`;
+}
+
+// Handle tab switching and update timer display
+document.querySelectorAll('.tab').forEach(tab => {
+    
     tab.addEventListener('click', () => {
-        tabs.forEach(t => t.classList.remove('active'));
-        tab.classList.add('active');
-        document.body.style.backgroundColor = tab.getAttribute('data-bg');
-        console.log(startButton.id);
-        document.getElementById(startButton.id).style.color = tab.getAttribute('data-btncolor');
 
-        timerDisplay.textContent = tab.getAttribute('data-time');
-        clearInterval(intervalId);
-        startButton.textContent = 'START';
-        isRunning = false;
+        // Remove active class from all tabs
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+
+        // Add active class to the clicked tab
+        tab.classList.add('active');
+
+        // Update timer and background based on tab settings
+        const timerType = tab.textContent.trim().replace(/\s+/g, '');
+        const formattedTimerType = timerType.charAt(0).toLowerCase() + timerType.slice(1);
+        
+        console.log(formattedTimerType);
+        const savedSettings = JSON.parse(localStorage.getItem('pomodoroSettings')) || {
+            pomodoro: 25,
+            shortBreak: 5,
+            longBreak: 15,
+        };
+        const timerValue = savedSettings[formattedTimerType] || 25; // Default to 25 minutes for Pomodoro if not found
+        const timerDisplay = document.getElementById('timerDisplay');
+
+        timerDisplay.textContent = formatTime(timerValue);
+        document.body.style.backgroundColor = tab.getAttribute('data-bg');
     });
 });
 
@@ -120,6 +176,16 @@ startButton.addEventListener('click', () => {
         isRunning = true;
         startButton.textContent = 'PAUSE';
         startTimer(timerDisplay.textContent);
+    }
+});
+
+// Load tasks and settings on page load
+document.addEventListener('DOMContentLoaded', () => {
+    loadSettings();
+    const tabsArray = Array.from(tabs);
+    const activeTab = tabsArray.find(tab => tab.classList.contains('active'));
+    if (activeTab) {
+        activeTab.click(); // Set active tab and timer on load
     }
 });
 
@@ -202,34 +268,5 @@ taskTableBody.addEventListener('click', (event) => {
         taskModal.style.display = 'flex';
     }
 });
-
 // Load tasks on page load
 document.addEventListener('DOMContentLoaded', loadTasks);
-
-
-
-
-
-
-
-
-document.addEventListener("DOMContentLoaded", function() {
-    // Get references to the necessary elements
-    const gearIcon = document.querySelector('.fa-gear');
-    const closeIcon = document.querySelector('.fa-xmark');
-    const popup = document.getElementById('setting_content_id');
-  
-    // Show the popup when the gear icon is clicked
-    gearIcon.addEventListener('click', function() {
-
-        // alert("You clicked on Setting!");
-
-      popup.style.display = 'flex';  // You can change this to a different style or animation if needed
-
-    });
-  
-    // Hide the popup when the x-mark icon is clicked
-    closeIcon.addEventListener('click', function() {
-      popup.style.display = 'none';   // You can change this to a fade-out or another effect if desired
-    });
-  });
