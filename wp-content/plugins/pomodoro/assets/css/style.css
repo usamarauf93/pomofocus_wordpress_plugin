@@ -371,11 +371,9 @@ td {
 	justify-content: center;
 	align-items: center;
 	flex-direction: row;
-
-
 }
-
-.modal-content .controls button {
+.modal-content .controls button, .modal-content .controls button:active {
+	border: none;
 	width: 100%;
 }
 

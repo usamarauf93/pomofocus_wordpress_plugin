@@ -313,13 +313,14 @@ taskTableBody.addEventListener('click', (event) => {
     }
 });
 function updateFinishAt(taskPomodoros, pomodoroDuration) {
+    // console.log(taskPomodoros, pomodoroDuration);
     // Convert pomodoroDuration (HH:MM) to total minutes
     const [minutes, seconds] = pomodoroDuration.split(':').map(Number);
     const totalPomodoroMinutes = minutes;
 
     // Calculate total time required based on the number of pomodoros
     const totalMinutes = taskPomodoros * totalPomodoroMinutes;
-
+    // console.log('total minutes', totalMinutes);
     // Get the current time
     const currentTime = new Date();
 

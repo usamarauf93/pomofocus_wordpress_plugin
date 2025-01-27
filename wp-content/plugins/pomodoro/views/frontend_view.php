@@ -43,7 +43,7 @@
             <p class="est-text">Est Pomodoros:</p>
             <div class="controls">
                      <button id="decreasePomodoro"><i class="fa-solid fa-circle-minus incdec"></i></button>
-                     <input type="number" id="pomodoros" value="1" min="1" readonly />
+                     <input type="number" id="pomodoros" value="1" min="1"  />
                      <button id="increasePomodoro"><i class="fa-solid fa-circle-plus incdec"></i></button>
                   </div>
             <textarea id="taskNote" placeholder="Add note"></textarea>
