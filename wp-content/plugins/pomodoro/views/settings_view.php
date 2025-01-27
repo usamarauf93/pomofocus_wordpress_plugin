@@ -250,6 +250,6 @@
     </div>
   </div>
   <div id="saveSettingsButton" class="bottom-bar">
-    <button class="okay-bottom-bar">OK</button>
+    <button class="okay-bottom-bar">Save</button>
   </div>
 </div>

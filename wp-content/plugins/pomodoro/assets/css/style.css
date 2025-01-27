@@ -16,7 +16,7 @@ body {
 .maindiv {
 	padding: 0px 0px 70px 0px;
 	margin: 0;
-	width: 500px;
+	width: 540px;
 
 
 }
@@ -56,7 +56,7 @@ body {
 }
 
 .groupdiv {
-	width: 100%;
+	width: 90%;
 	border-radius: 6px;
 	background: rgb(255 255 255 / 10%);
 	padding: 30px 20px;
@@ -65,6 +65,8 @@ body {
 	align-items: center;
 	justify-content: center;
 	flex-direction: column;
+    align-items: center;
+    margin: 0 auto;
 }
 
 .tabs {
@@ -135,9 +137,10 @@ body {
 }
 
 .nextforward {
-	margin-left: 20%;
-	font-size: 30px;
-	color: white;
+    margin-left: 8%;
+    font-size: 20px;
+    color: white;
+	display:none;
 }
 
 
@@ -273,7 +276,7 @@ td {
 	background: rgb(255 255 255 / 10%);
 	color: #fff;
 	padding: 18px 20px;
-	width: 100%;
+	width: 90%;
 	font-size: 18px;
 	text-align: center;
 
@@ -331,22 +334,21 @@ td {
 
 
 .input-window {
-	font-size: 20px;
-	text-align: center;
-	border: none;
+    width: 100%;
+    max-width: 400px;
+    padding: 12px 15px;
+    font-size: 16px;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    outline: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: border-color 0.3s ease-in-out;
 }
 
 .input-window:focus {
-	outline: none;
+    border-color: #4CAF50;
 }
 
-.input-window::placeholder {
-
-	color: #717171;
-	font-weight: 700;
-	font-size: 20px;
-
-}
 
 .est-text {
 
@@ -449,4 +451,47 @@ td {
 }
 header{
 	display: none;
+}
+
+/* Small screen media qeries starts here  */
+
+
+@media only screen and (min-height: 150px) {
+    @media only screen and (max-width: 200px) {
+        .timer {
+            font-size: 58px;
+        }
+		.todo-container{
+			display:none;
+		}
+    }
+}
+
+@media only screen and (max-width: 230px) and (min-height: 400px) {
+    .ikkVyV {
+        height: 100px;
+    }
+}
+
+@media only screen and (max-width: 230px) and (min-height: 400px) {
+    .erDfdd {
+        -webkit-writing-mode: vertical-rl;
+        writing-mode: vertical-rl;
+        text-orientation: mixed;
+        height: 100%;
+        display: flex
+;
+        -webkit-box-pack: start;
+        justify-content: flex-start;
+        -webkit-box-align: center;
+        align-items: center;
+        margin-top: 2px;
+    }
+}
+
+@media only screen and (max-width: 230px) and (min-height: 400px) {
+    .jJFFlW {
+        height: auto;
+        margin-top: 18px;
+    }
 }

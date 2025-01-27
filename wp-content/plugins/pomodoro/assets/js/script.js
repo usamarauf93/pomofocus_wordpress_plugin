@@ -1,6 +1,7 @@
 let intervalId;
 let isRunning = false;
 let activeTimerType = 'pomodoro'; // Default active timer
+const mainDiv = document.querySelector('.maindiv');
 const tabs = document.querySelectorAll('.tab');
 const timerDisplay = document.querySelector('.timer');
 const startButton = document.querySelector('.start-button');
@@ -87,23 +88,26 @@ function renderTasks(tasks) {
     updateCounter();
 }
 function loadSettings() {
+    const defaultColor = '#BA4949';
     const defaultSettings = {
         pomodoro: 25,
         shortBreak: 5,
         longBreak: 15,
+        colorTheme:defaultColor
     };
 
     const savedSettings = JSON.parse(localStorage.getItem('pomodoroSettings')) || defaultSettings;
 
     const activeTab = document.querySelector('.tab.active');
     const timerDisplay = document.getElementById('timerDisplay');
+  
     if (activeTab) {
         const activeTimerType = activeTab.textContent.trim().replace(/\s+/g, '').toLowerCase(); // Determine active tab type
         const timeValue = savedSettings[activeTimerType] || defaultSettings[activeTimerType];
 
         // Update the timer display
         timerDisplay.textContent = formatTime(timeValue);
-        document.body.style.backgroundColor = activeTab.getAttribute('data-bg');
+        mainDiv.style.backgroundColor = activeTab.getAttribute('data-bg');
     } else {
         // If no tab is active, set to default Pomodoro
         timerDisplay.textContent = formatTime(defaultSettings.pomodoro);
@@ -117,39 +121,60 @@ function formatTime(minutes) {
 }
 
 // Handle tab switching and update timer display
-document.querySelectorAll('.tab').forEach(tab => {
-    
-    tab.addEventListener('click', () => {
+document.querySelectorAll('.tab').forEach((tab, index, tabs) => {
+    tab.addEventListener('click', () => switchTab(index));
+});
 
-        // Remove active class from all tabs
-        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+// Function to switch tab based on index
+function switchTab(index) {
+    document.getElementById('forwardButton').style.display = 'none';
+    const tabs = document.querySelectorAll('.tab');
 
-        // Add active class to the clicked tab
-        tab.classList.add('active');
+    // Remove active class from all tabs
+    tabs.forEach(t => t.classList.remove('active'));
 
-        // Update timer and background based on tab settings
-        const timerType = tab.textContent.trim().replace(/\s+/g, '');
-       formattedTimerType = timerType.charAt(0).toLowerCase() + timerType.slice(1);
+    // Add active class to the clicked tab
+    tabs[index].classList.add('active');
 
-        startButton.setAttribute('data-tabActive', formattedTimerType);
-       
+    // Update timer and background based on tab settings
+    const timerType = tabs[index].textContent.trim().replace(/\s+/g, '');
+    const formattedTimerType = timerType.charAt(0).toLowerCase() + timerType.slice(1);
 
-        
-        // console.log(formattedTimerType);
-        const savedSettings = JSON.parse(localStorage.getItem('pomodoroSettings')) || {
-            pomodoro: 25,
-            shortBreak: 5,
-            longBreak: 15,
-        };
-        const timerValue = savedSettings[formattedTimerType] || 25; // Default to 25 minutes for Pomodoro if not found
-        const timerDisplay = document.getElementById('timerDisplay');
-        timerDisplay.setAttribute('data-tabActive', formattedTimerType);
-        timerDisplay.textContent = formatTime(timerValue);
-        document.body.style.backgroundColor = tab.getAttribute('data-bg');
-        clearInterval(intervalId);
-        startButton.textContent = 'START';
-        isRunning = false;
-    });
+    startButton.setAttribute('data-tabActive', formattedTimerType);
+
+    // Retrieve settings from local storage or use defaults
+    const savedSettings = JSON.parse(localStorage.getItem('pomodoroSettings')) || {
+        pomodoro: 25,
+        shortBreak: 5,
+        longBreak: 15,
+    };
+
+    const timerValue = savedSettings[formattedTimerType] || 25; // Default to 25 minutes for Pomodoro if not found
+    const timerDisplay = document.getElementById('timerDisplay');
+    timerDisplay.setAttribute('data-tabActive', formattedTimerType);
+    timerDisplay.textContent = formatTime(timerValue);
+
+    // Update background color
+    mainDiv.style.backgroundColor = tabs[index].getAttribute('data-bg');
+    document.body.style.backgroundColor = tabs[index].getAttribute('data-bg');
+
+    // Reset timer
+    clearInterval(intervalId);
+    startButton.textContent = 'START';
+    startButton.style.color =  tabs[index].getAttribute('data-bg');
+    isRunning = false;
+}
+
+// Add event listener for the forward button
+document.getElementById('forwardButton').addEventListener('click', () => {
+    const tabs = document.querySelectorAll('.tab');
+    const activeTab = document.querySelector('.tab.active');
+    let currentIndex = Array.from(tabs).indexOf(activeTab);
+
+    // Calculate next tab index (looping back to the start if needed)
+    let nextIndex = (currentIndex + 1) % tabs.length;
+
+    switchTab(nextIndex);
 });
 
 // Start the timer
@@ -187,10 +212,14 @@ startButton.addEventListener('click', () => {
         clearInterval(intervalId);
         startButton.textContent = 'START';
         isRunning = false;
+        document.getElementById('forwardButton').style.display = 'none';
+
     } else {
         isRunning = true;
         startButton.textContent = 'PAUSE';
         startTimer(timerDisplay.textContent,activeTabType);
+        document.getElementById('forwardButton').style.display = 'block';
+
     }
 });
 

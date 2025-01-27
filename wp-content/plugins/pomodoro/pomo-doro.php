@@ -80,6 +80,8 @@ function pomodoro_timer_shortcode($atts) {
     $atts = shortcode_atts(
         array(
             'duration' => '25', // Default duration in minutes
+            'width'    => '100%', // Default width
+            'height'   => '800px', // Default height
         ),
         $atts,
         'pomodoro_timer'
@@ -87,10 +89,8 @@ function pomodoro_timer_shortcode($atts) {
 
     // Sanitize and prepare variables
     $duration = intval($atts['duration']);
-
-    // Make variables available to the view if needed
-    // You can pass variables via global scope or use other methods
-    // For simplicity, variables can be accessed directly in the view
+    $width = esc_attr($atts['width']);
+    $height = esc_attr($atts['height']);
 
     ob_start();
 
@@ -99,7 +99,9 @@ function pomodoro_timer_shortcode($atts) {
 
     // Check if the file exists to prevent errors
     if (file_exists($file_path)) {
+        echo '<div class="pomodoro-timer-container" style="min-width:' . $width . '; min-height:' . $height . '; overflow: auto;">';
         include $file_path;
+        echo '</div>';
     } else {
         echo '<p>Frontend view not found.</p>';
     }
@@ -107,6 +109,7 @@ function pomodoro_timer_shortcode($atts) {
     return ob_get_clean();
 }
 add_shortcode('pomodoro_timer', 'pomodoro_timer_shortcode');
+
 
 /**
  * Activation Hook
