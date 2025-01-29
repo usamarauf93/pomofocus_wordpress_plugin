@@ -34,6 +34,7 @@
       <div class="pomo-bar">
          <span>Pomos: 0/<span id="taskCount">126</span></span>
          <span id="finishAt"></span>
+         <span id="hoursCount">(0h)</span>
       </div>
    </div>
    <div class="modal" id="taskModal">

@@ -12,6 +12,17 @@ body {
 
 
 }
+main{
+	padding: 0;
+    margin: 0;
+}
+.entry-content.wp-block-post-content.has-global-padding.is-layout-constrained.wp-block-post-content-is-layout-constrained{
+	padding: 0;
+    margin: 0;
+}
+.pomodoro-timer-container{
+	padding: 2% 0 2% 0;
+}
 
 .maindiv {
 	padding: 0px 0px 70px 0px;
@@ -492,4 +503,36 @@ header{
         height: auto;
         margin-top: 18px;
     }
+}
+
+/* Style for the check mark button */
+.check-btn {
+    background: none;
+    border: 2px solid #BA4949; /* Use the same color as your theme */
+    border-radius: 4px;
+    color: #BA4949; /* Text color */
+    cursor: pointer;
+    font-size: 14px;
+    padding: 2px 6px;
+    margin-right: 8px; /* Space between the button and the task name */
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Hover effect for the check mark button */
+.check-btn:hover {
+    background-color: #BA4949; /* Background color on hover */
+    color: white; /* Text color on hover */
+}
+
+/* Style for the check mark button when the task is done */
+.check-btn.done {
+    background-color: #BA4949; /* Background color when task is done */
+    color: white; /* Text color when task is done */
+    border-color: #BA4949; /* Border color when task is done */
+}
+
+/* Style for the task row when the task is done */
+tr.done {
+    text-decoration: line-through;
+    opacity: 0.7; /* Slightly fade out completed tasks */
 }

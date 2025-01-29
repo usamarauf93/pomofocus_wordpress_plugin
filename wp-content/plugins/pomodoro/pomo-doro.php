@@ -80,7 +80,7 @@ function pomodoro_timer_shortcode($atts) {
     $atts = shortcode_atts(
         array(
             'duration' => '25', // Default duration in minutes
-            'width'    => '100%', // Default width
+            'width'    => '1900px', // Default width
             'height'   => '800px', // Default height
         ),
         $atts,

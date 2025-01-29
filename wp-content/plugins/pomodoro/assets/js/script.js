@@ -1,6 +1,7 @@
 let intervalId;
 let isRunning = false;
 let activeTimerType = 'pomodoro'; // Default active timer
+const pomodoroTimerContainer = document.querySelector('.pomodoro-timer-container');
 const mainDiv = document.querySelector('.maindiv');
 const tabs = document.querySelectorAll('.tab');
 const timerDisplay = document.querySelector('.timer');
@@ -49,23 +50,14 @@ function saveTasks(tasks) {
     localStorage.setItem('tasks', JSON.stringify(tasks));
     updateCounter();
 }
-function updateCounter(){
-     // Retrieve the JSON string from localStorage
-     const tasksString = localStorage.getItem('tasks');
+function updateCounter() {
+    const tasksString = localStorage.getItem('tasks');
+    const tasksArray = tasksString ? JSON.parse(tasksString) : [];
+    const remainingTasks = tasksArray.filter(task => !task.done).length;
 
-     // Parse the string into an array (handle the case if it's null or empty)
-     const tasksArray = tasksString ? JSON.parse(tasksString) : [];
- 
-     // Count how many objects are in the array
-     const tasksCount = tasksArray.length;
- 
-     // Now you can do something with the count
-    //  console.log("Number of tasks:", tasksCount);
-     document.getElementById('taskCount').textContent = tasksCount;
-     taskModal.style.display = 'none';
-    // console.log(tasksCount,timerDisplay.textContent);
-     updateFinishAt(tasksCount, timerDisplay.textContent);
-
+    document.getElementById('taskCount').textContent = remainingTasks;
+    taskModal.style.display = 'none';
+    updateFinishAt(remainingTasks, timerDisplay.textContent);
 }
 // Render tasks in the table
 function renderTasks(tasks) {
@@ -73,7 +65,10 @@ function renderTasks(tasks) {
     tasks.forEach((task, index) => {
         const row = document.createElement('tr');
         row.innerHTML = `
-            <td>${task.name}</td>
+            <td>
+                <button class="check-btn" data-index="${index}">${task.done ? '✓' : '◻'}</button>
+                ${task.name}
+            </td>
             <td>${task.pomodoros}</td>
             <td>${task.note || '—'}</td>
             <td>
@@ -83,10 +78,41 @@ function renderTasks(tasks) {
                 </div>
             </td>
         `;
+        if (task.done) {
+            row.style.textDecoration = 'line-through';
+        }
         taskTableBody.appendChild(row);
     });
     updateCounter();
 }
+taskTableBody.addEventListener('click', (event) => {
+    const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+
+    if (event.target.classList.contains('check-btn')) {
+        const index = event.target.dataset.index;
+        tasks[index].done = !tasks[index].done; // Toggle the done status
+        saveTasks(tasks);
+        renderTasks(tasks);
+        updateCounter();
+    } else if (event.target.classList.contains('delete-btn')) {
+        const index = event.target.dataset.index;
+        tasks.splice(index, 1);
+        saveTasks(tasks);
+        renderTasks(tasks);
+    } else if (event.target.classList.contains('edit-btn')) {
+        const index = event.target.dataset.index;
+        const task = tasks[index];
+
+        editingRow = event.target.closest('tr');
+        editingRow.dataset.index = index;
+
+        taskNameInput.value = task.name;
+        pomodorosInput.value = task.pomodoros;
+        taskNoteInput.value = task.note;
+
+        taskModal.style.display = 'flex';
+    }
+});
 function loadSettings() {
     const defaultColor = '#BA4949';
     const defaultSettings = {
@@ -111,7 +137,7 @@ function loadSettings() {
     } else {
         // If no tab is active, set to default Pomodoro
         timerDisplay.textContent = formatTime(defaultSettings.pomodoro);
-        document.body.style.backgroundColor = '#BA4949'; // Default background color for Pomodoro
+        pomodoroTimerContainer.style.backgroundColor = '#BA4949'; // Default background color for Pomodoro
     }
 }
 
@@ -156,7 +182,7 @@ function switchTab(index) {
 
     // Update background color
     mainDiv.style.backgroundColor = tabs[index].getAttribute('data-bg');
-    document.body.style.backgroundColor = tabs[index].getAttribute('data-bg');
+    pomodoroTimerContainer.style.backgroundColor = tabs[index].getAttribute('data-bg');
 
     // Reset timer
     clearInterval(intervalId);
@@ -247,7 +273,6 @@ cancelTaskButton.addEventListener('click', () => {
     taskNoteInput.value = '';
 });
 
-// Save task
 saveTaskButton.addEventListener('click', () => {
     const taskName = taskNameInput.value.trim();
     const pomodoros = pomodorosInput.value;
@@ -259,9 +284,9 @@ saveTaskButton.addEventListener('click', () => {
 
     if (editingRow !== null) {
         const index = editingRow.dataset.index;
-        tasks[index] = { name: taskName, pomodoros, note: taskNote };
+        tasks[index] = { name: taskName, pomodoros, note: taskNote, done: tasks[index].done || false };
     } else {
-        tasks.push({ name: taskName, pomodoros, note: taskNote });
+        tasks.push({ name: taskName, pomodoros, note: taskNote, done: false });
     }
 
     saveTasks(tasks);
@@ -334,7 +359,24 @@ function updateFinishAt(taskPomodoros, pomodoroDuration) {
 
     // Display total minutes and finish time
     document.getElementById('finishAt').textContent = `Finish At (${formattedFinishTime})`; // Display the finish time
+    updateHoursCount();
 }
+// Function to calculate and update hours count
+function updateHoursCount() {
+    const defaultSettings = {
+        pomodoro: 25,
+        shortBreak: 5,
+        longBreak: 15
+    };
 
+    const savedSettings = JSON.parse(localStorage.getItem('pomodoroSettings')) || defaultSettings;
+
+    const tasksString = localStorage.getItem('tasks');
+    const tasksArray = tasksString ? JSON.parse(tasksString) : [];
+    const totalPomodoros = tasksArray.reduce((sum, task) => sum + (task.done ? 0 : parseInt(task.pomodoros)), 0); // Only count incomplete tasks
+    const totalHours = (totalPomodoros * savedSettings.pomodoro) / 60; // Convert Pomodoros to hours 
+    console.log('savedSettings.pomodoro',savedSettings.pomodoro,totalPomodoros)
+    document.getElementById('hoursCount').textContent = `(${totalHours.toFixed(1)}h)`; // Display hours with 1 decimal place
+}
 // Load tasks on page load
 document.addEventListener('DOMContentLoaded', loadTasks);
