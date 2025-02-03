@@ -4,7 +4,7 @@
  * Plugin URI: https://technstack.com
  * Description: A WordPress Pomodoro timer plugin based on Pomofocus.io, with no user logins required.
  * Version: 1.0
- * Author: Usama & Rizwan
+ * Author: Usama Rauf (usamarauf93@gmail.com)
  * Author URI: https://technstack.com
  * License: GPL2
  * Text Domain: pomodoro-timer
@@ -68,7 +68,13 @@ function pomodoro_timer_enqueue_assets() {
                 'theme2' => 'rgb(56, 133, 138)',
                 'theme3' => 'rgb(57, 112, 151)  '
             ],
-            'tickSoundURL' => plugins_url('assets/sounds/clock.mp3', __FILE__)
+            'tickFast' => plugins_url('assets/sounds/tickingFast.mp3', __FILE__),
+            'tickSlow' => plugins_url('assets/sounds/tickingSlow.mp3', __FILE__),
+            'alarm' => plugins_url('assets/sounds/alarm.mp3', __FILE__),
+            'bird' => plugins_url('assets/sounds/bird.mp3', __FILE__),
+            'digital' => plugins_url('assets/sounds/digital.mp3', __FILE__),
+            'kitchen' => plugins_url('assets/sounds/kitchen.mp3', __FILE__),
+            'wood' => plugins_url('assets/sounds/wood.mp3', __FILE__)
             // Add more settings as needed
         ));
     }

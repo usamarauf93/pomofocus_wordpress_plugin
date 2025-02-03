@@ -13,17 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
         );
     });
 
-    // Ticking Sound Slider
-    const rangeInputTicking = document.getElementById('myRange2');
-    const valueDisplayTicking = document.getElementById('ticking-sound-value');
-
-    if (rangeInputTicking && valueDisplayTicking) {
-        rangeInputTicking.addEventListener('input', function () {
-            valueDisplayTicking.innerText = rangeInputTicking.value;
-        });
-    } else {
-        console.error('Ticking Sound slider or display element not found.');
-    }
+ 
 
     // Alarm Sound Slider
     const alarmSoundSlider = document.getElementById('myRange');
@@ -35,6 +25,17 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     } else {
         console.error('Alarm Sound slider or display element not found.');
+    }
+    // Ticking Sound Slider
+    const tickingSoundSlider = document.getElementById('myRange2');
+    const tickingSoundDisplay = document.getElementById('tickingSoundDisplay');
+
+    if (tickingSoundSlider && tickingSoundDisplay) {
+        tickingSoundSlider.addEventListener('input', function () {
+            tickingSoundDisplay.innerText = tickingSoundSlider.value;
+        });
+    } else {
+        console.error('Ticking Sound slider or display element not found.');
     }
 
     // Toggle (Checkbox) Active Class Code
@@ -69,7 +70,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Sound settings
         settings.alarmSound = document.getElementById('alarmSound').value;
-        settings.tickingSoundVolume = alarmSoundDisplay.innerText;
+        settings.alarmSoundVolume = alarmSoundDisplay.innerText;
+        settings.tickingSoundVolume = tickingSoundDisplay.innerText;
         settings.tickingSound = document.getElementById('tickingSound').value;
 
         // Color Theme settings
@@ -86,7 +88,7 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.setItem('pomodoroSettings', JSON.stringify(settings));
         alert('Settings saved successfully!');
         settingsModal.style.display = 'none';
-        window.reload();
+        window.location.reload();
     });
 
     function loadSettingsFromStorage() {
@@ -102,6 +104,7 @@ document.addEventListener('DOMContentLoaded', () => {
             darkModeToggle: false,
             repeatAlarmSound: false,
             alarmSound: 'default',
+            alarmSoundVolume: 50,
             tickingSoundVolume: 50,
             tickingSound: 'default',
             colorTheme: {
@@ -151,8 +154,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Set volume display
         const alarmSoundDisplay = document.getElementById('alarmSoundDisplay');
-        alarmSoundDisplay.innerText = savedSettings.tickingSoundVolume;
+        alarmSoundDisplay.innerText = savedSettings.alarmSoundVolume;
         document.getElementById('myRange').value = savedSettings.tickingSoundVolume;
+    
+        const tickingSoundDisplay = document.getElementById('tickingSoundDisplay');
+        alarmSoundDisplay.innerText = savedSettings.tickingSoundVolume;
+        document.getElementById('myRange2').value = savedSettings.tickingSoundVolume;
     }
 
     // Color Picker functionality

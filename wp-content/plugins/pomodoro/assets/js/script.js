@@ -18,8 +18,11 @@ const taskNoteInput = document.getElementById('taskNote');
 const decreasePomodoro = document.getElementById('decreasePomodoro');   
 const increasePomodoro = document.getElementById('increasePomodoro');
 const taskTableBody = document.getElementById('taskTableBody');
-console.log(pomodoroTimerSettings,'pomodoroTimerSettings');
-const tickSound = new Audio(pomodoroTimerSettings.tickSoundURL);
+// console.log(pomodoroTimerSettings,'pomodoroTimerSettings');
+var tickSound;
+var alarmSound;
+tickSound = new Audio(pomodoroTimerSettings.tickSlow);
+alarmSound = new Audio(pomodoroTimerSettings.alarm);
 
 // settings modal and button element 
 const settingsButton = document.getElementById('settingsButton');
@@ -128,7 +131,11 @@ function loadSettings() {
         pomodoro: 25,
         shortBreak: 5,
         longBreak: 15,
-        colorTheme: defaultColor
+        colorTheme: defaultColor,
+        tickingSound: pomodoroTimerSettings.tickSlow,
+        alarmSound:pomodoroTimerSettings.alarm,
+        tickSoundVolume:50,
+        alarmSoundVolume:50
     };
 
     // Retrieve saved settings from localStorage or use defaults
@@ -166,6 +173,14 @@ function loadSettings() {
         // If no tab is active, set to default Pomodoro
         timerDisplay.textContent = formatTime(defaultSettings.pomodoro);
         pomodoroTimerContainer.style.backgroundColor = '#BA4949'; // Default background color for Pomodoro
+    }
+    if(savedSettings.tickingSound){
+        tickSound = new Audio(pomodoroTimerSettings[savedSettings.tickingSound]); 
+        tickSound.volume = parseFloat((savedSettings.tickingSoundVolume / 100).toFixed(1));
+    }
+    if(savedSettings.alarmSound){
+        alarmSound = new Audio(pomodoroTimerSettings[savedSettings.alarmSound]);   
+        alarmSound.volume = parseFloat((savedSettings.alarmSoundVolume/100).toFixed(1));
     }
 }
 
@@ -241,6 +256,8 @@ function startTimer(duration,activeTimerType) {
             if (minutes === 0) {
                 clearInterval(intervalId);
                 startButton.textContent = 'START';
+                alarmSound.play();
+                tickSound.pause();
                 isRunning = false;
                 return;
             }

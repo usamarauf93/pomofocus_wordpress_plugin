@@ -144,14 +144,14 @@
             <div class="dropdown-item-select">
               <select id="tickingSound" class="dropdown-item-select-inner">
                 <option value="None">None</option>
-                <option value="tickingFas">Ticking Fast</option>
-                <option value="tickingSlow">Ticking Slow</option>
+                <option value="tickFast">Ticking Fast</option>
+                <option value="tickSlow">Ticking Slow</option>
               </select>
             </div>
           </div>
           <div class="progress-bar-alignment">
             <div>
-              <div id='ticking-sound-value'>51</div>
+              <div id='tickingSoundDisplay'>51</div>
               <input type="range" min="0" max="100" class="progress-bar-control" id="myRange2" value="51">
             </div>
           </div>
