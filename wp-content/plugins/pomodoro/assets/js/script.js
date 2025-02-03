@@ -174,14 +174,17 @@ function loadSettings() {
         timerDisplay.textContent = formatTime(defaultSettings.pomodoro);
         pomodoroTimerContainer.style.backgroundColor = '#BA4949'; // Default background color for Pomodoro
     }
-    if(savedSettings.tickingSound){
+    if(savedSettings.tickingSound && savedSettings.alarmSound){
         tickSound = new Audio(pomodoroTimerSettings[savedSettings.tickingSound]); 
+        alarmSound = new Audio(pomodoroTimerSettings[savedSettings.alarmSound]);   
+
+    }
+    if(savedSettings.alarmSoundVolume && savedSettings.tickingSoundVolume ){
+        
+        alarmSound.volume = parseFloat((savedSettings.alarmSoundVolume/100).toFixed(1));
         tickSound.volume = parseFloat((savedSettings.tickingSoundVolume / 100).toFixed(1));
     }
-    if(savedSettings.alarmSound){
-        alarmSound = new Audio(pomodoroTimerSettings[savedSettings.alarmSound]);   
-        alarmSound.volume = parseFloat((savedSettings.alarmSoundVolume/100).toFixed(1));
-    }
+
 }
 
 // Utility function to format time in MM:SS
