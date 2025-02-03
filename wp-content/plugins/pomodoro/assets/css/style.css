@@ -536,3 +536,13 @@ tr.done {
     text-decoration: line-through;
     opacity: 0.7; /* Slightly fade out completed tasks */
 }
+.runningDiv {
+    display: flex;
+    justify-content: center; /* Centers content horizontally */
+    align-items: center;     /* Centers content vertically */
+    height: 10vh;           /* Full viewport height to center vertically in the viewport */
+    text-align: center;      /* Ensures text inside is centered */
+	color: #fff;
+	flex-direction:column;
+	margin: 4% 0 4% 0;
+}

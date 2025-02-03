@@ -18,7 +18,8 @@ const taskNoteInput = document.getElementById('taskNote');
 const decreasePomodoro = document.getElementById('decreasePomodoro');   
 const increasePomodoro = document.getElementById('increasePomodoro');
 const taskTableBody = document.getElementById('taskTableBody');
-
+console.log(pomodoroTimerSettings,'pomodoroTimerSettings');
+const tickSound = new Audio(pomodoroTimerSettings.tickSoundURL);
 
 // settings modal and button element 
 const settingsButton = document.getElementById('settingsButton');
@@ -46,8 +47,12 @@ function loadTasks() {
 
 // Save tasks to localStorage
 function saveTasks(tasks) {
-    // console.log('save task clicked')
+    // console.log('save task clicked',tasks);
     localStorage.setItem('tasks', JSON.stringify(tasks));
+    // Display the names of the tasks where done is true
+    const taskRunning =  tasks.filter(task => task.done === false);
+    if(taskRunning.length)
+        document.getElementById('running-task').textContent = tasks.filter(task => task.done === false)[0].name;
     updateCounter();
 }
 function updateCounter() {
@@ -83,6 +88,10 @@ function renderTasks(tasks) {
         }
         taskTableBody.appendChild(row);
     });
+    const taskRunning =  tasks.filter(task => task.done === false);
+    if(taskRunning.length)
+        document.getElementById('running-task').textContent = tasks.filter(task => task.done === false)[0].name;
+    updateCounter();
     updateCounter();
 }
 taskTableBody.addEventListener('click', (event) => {
@@ -114,19 +123,38 @@ taskTableBody.addEventListener('click', (event) => {
     }
 });
 function loadSettings() {
-    const defaultColor = '#BA4949';
+    const defaultColor = pomodoroTimerSettings.colorTheme;
     const defaultSettings = {
         pomodoro: 25,
         shortBreak: 5,
         longBreak: 15,
-        colorTheme:defaultColor
+        colorTheme: defaultColor
     };
 
+    // Retrieve saved settings from localStorage or use defaults
     const savedSettings = JSON.parse(localStorage.getItem('pomodoroSettings')) || defaultSettings;
 
+    // Update the data-bg attribute for each tab based on saved colorTheme
+    const theme1Tab = document.getElementById('theme1tab');
+    const theme2Tab = document.getElementById('theme2tab');
+    const theme3Tab = document.getElementById('theme3tab');
+
+    if (theme1Tab && theme2Tab && theme3Tab) {
+        theme1Tab.setAttribute('data-bg', savedSettings.colorTheme.theme1);
+        theme2Tab.setAttribute('data-bg', savedSettings.colorTheme.theme2);
+        theme3Tab.setAttribute('data-bg', savedSettings.colorTheme.theme3);
+
+        // Optionally, update the background color of the active tab
+        const activeTab = document.querySelector('.tab.active');
+        if (activeTab) {
+            mainDiv.style.backgroundColor = activeTab.getAttribute('data-bg');
+        }
+    }
+
+    // Update the timer display based on the active tab
     const activeTab = document.querySelector('.tab.active');
     const timerDisplay = document.getElementById('timerDisplay');
-  
+
     if (activeTab) {
         const activeTimerType = activeTab.textContent.trim().replace(/\s+/g, '').toLowerCase(); // Determine active tab type
         const timeValue = savedSettings[activeTimerType] || defaultSettings[activeTimerType];
@@ -153,6 +181,7 @@ document.querySelectorAll('.tab').forEach((tab, index, tabs) => {
 
 // Function to switch tab based on index
 function switchTab(index) {
+    tickSound.pause();
     document.getElementById('forwardButton').style.display = 'none';
     const tabs = document.querySelectorAll('.tab');
 
@@ -218,6 +247,7 @@ function startTimer(duration,activeTimerType) {
             minutes--;
             seconds = 59;
         } else {
+            tickSound.play();
             seconds--;
         }
         // console.log(timerDisplay.getAttribute('data-tabActive'));
@@ -239,12 +269,14 @@ startButton.addEventListener('click', () => {
         startButton.textContent = 'START';
         isRunning = false;
         document.getElementById('forwardButton').style.display = 'none';
+        tickSound.pause();
 
     } else {
         isRunning = true;
         startButton.textContent = 'PAUSE';
         startTimer(timerDisplay.textContent,activeTabType);
         document.getElementById('forwardButton').style.display = 'block';
+
 
     }
 });
@@ -314,29 +346,7 @@ increasePomodoro.addEventListener('click', () => {
     pomodorosInput.value++;
 });
 
-// Handle task table actions
-taskTableBody.addEventListener('click', (event) => {
-    const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
 
-    if (event.target.classList.contains('delete-btn')) {
-        const index = event.target.dataset.index;
-        tasks.splice(index, 1);
-        saveTasks(tasks);
-        renderTasks(tasks);
-    } else if (event.target.classList.contains('edit-btn')) {
-        const index = event.target.dataset.index;
-        const task = tasks[index];
-
-        editingRow = event.target.closest('tr');
-        editingRow.dataset.index = index;
-
-        taskNameInput.value = task.name;
-        pomodorosInput.value = task.pomodoros;
-        taskNoteInput.value = task.note;
-
-        taskModal.style.display = 'flex';
-    }
-});
 function updateFinishAt(taskPomodoros, pomodoroDuration) {
     // console.log(taskPomodoros, pomodoroDuration);
     // Convert pomodoroDuration (HH:MM) to total minutes

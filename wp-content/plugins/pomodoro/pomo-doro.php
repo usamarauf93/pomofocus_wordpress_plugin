@@ -62,10 +62,13 @@ function pomodoro_timer_enqueue_assets() {
         );
 
         // Pass settings to JS
-        wp_localize_script('pomodoro-timer-script', 'PomodoroTimerSettings', array(
-            'primaryColor'    => '#38b6ff',
-            'secondaryColor'  => '#ffffff',
-            'backgroundColor' => '#d9d9d9',
+        wp_localize_script('pomodoro-timer-script', 'pomodoroTimerSettings', array(
+            'colorTheme' => [
+                'theme1' => 'rgb(186, 73, 73)',
+                'theme2' => 'rgb(56, 133, 138)',
+                'theme3' => 'rgb(57, 112, 151)  '
+            ],
+            'tickSoundURL' => plugins_url('assets/sounds/clock.mp3', __FILE__)
             // Add more settings as needed
         ));
     }

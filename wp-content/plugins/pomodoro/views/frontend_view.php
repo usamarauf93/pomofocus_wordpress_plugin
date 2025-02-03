@@ -6,9 +6,9 @@
    </div>
    <div class="groupdiv">
       <div class="tabs">
-         <button  id="red1" class="tab active" data-btncolor="#BA4949" data-bg="#BA4949" data-time="25:00">Pomodoro</button>
-         <button  id="blue1" class="tab" data-btncolor="#38858A" data-bg="#38858A" data-time="05:00">Short Break</button>
-         <button  id="green11" class="tab" data-btncolor="#397097" data-bg="#397097" data-time="15:00">Long Break</button>
+         <button  id="theme1tab" class="tab active" data-btncolor="#BA4949" data-bg="#BA4949" data-time="25:00">Pomodoro</button>
+         <button  id="theme2tab" class="tab" data-btncolor="#38858A" data-bg="#38858A" data-time="05:00">Short Break</button>
+         <button  id="theme3tab" class="tab" data-btncolor="#397097" data-bg="#397097" data-time="15:00">Long Break</button>
       </div>
       <div class="timer" id="timerDisplay">25:00</div>
 
@@ -16,6 +16,10 @@
          <button id="start-button" class="start-button" style="color: #BA4949;">START</button>
          <i class="fa-solid fa-forward-step nextforward" id="forwardButton"></i>
       </div>
+   </div>
+   <div class="runningDiv">
+      <p>#1</p>
+      <span id="running-task"></span>
    </div>
    <div class="todo-container">
       <table>
