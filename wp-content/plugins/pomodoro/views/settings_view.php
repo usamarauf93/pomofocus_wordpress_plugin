@@ -116,11 +116,11 @@
             </div>
             <div class="dropdown-item-select">
               <select id="alarmSound" class="dropdown-item-select-inner">
-                <option value="Bell">Bell</option>
-                <option value="Bird">Bird</option>
-                <option value="Digital">Digital</option>
-                <option value="Kitchen">Kitchen</option>
-                <option value="Wood">Wood</option>
+                <option value="alarm">Alarm</option>
+                <option value="bird">Bird</option>
+                <option value="digital">Digital</option>
+                <option value="kitchen">Kitchen</option>
+                <option value="wood">Wood</option>
               </select>
             </div>
           </div>
@@ -144,16 +144,14 @@
             <div class="dropdown-item-select">
               <select id="tickingSound" class="dropdown-item-select-inner">
                 <option value="None">None</option>
-                <option value="Ticking Fast">Ticking Fast</option>
-                <option value="Ticking Slow">Ticking Slow</option>
-                <option value="White Noise">White Noise</option>
-                <option value="Brown Noise">Brown Noise</option>
+                <option value="tickFast">Ticking Fast</option>
+                <option value="tickSlow">Ticking Slow</option>
               </select>
             </div>
           </div>
           <div class="progress-bar-alignment">
             <div>
-              <div id='ticking-sound-value'>51</div>
+              <div id='tickingSoundDisplay'>51</div>
               <input type="range" min="0" max="100" class="progress-bar-control" id="myRange2" value="51">
             </div>
           </div>
@@ -168,28 +166,31 @@
       </div>
       <div class="theme-settings">
         <div class="time-mins-section">
-        <div class="wrapper-spacing">
+          <div class="wrapper-spacing">
             <div class="top-headingz">
-               <span class="heading-aligned-spacing">Color Themes</span>
+              <span class="heading-aligned-spacing">Color Themes</span>
             </div>
             <div class="colors-parent-div">
-               <!-- Radio Button for color theme 1 -->
-               <label>
-                  <input type="radio" name="color-theme" value="theme1" id="theme1">
-                  <span class="color-radio color-child1"></span>
-               </label>
-               <!-- Radio Button for color theme 2 -->
-               <label>
-                  <input type="radio" name="color-theme" value="theme2" id="theme2">
-                  <span class="color-radio color-child2"></span>
-               </label>
-               <!-- Radio Button for color theme 3 -->
-               <label>
-                  <input type="radio" name="color-theme" value="theme3" id="theme3">
-                  <span class="color-radio color-child3"></span>
-               </label>
+              <!-- Checkbox for color theme 1 -->
+              <label>
+                <input type="checkbox" name="color-theme" value="theme1" id="theme1">
+                <span class="color-radio color-child1"></span>
+              </label>
+              <!-- Checkbox for color theme 2 -->
+              <label>
+                <input type="checkbox" name="color-theme" value="theme2" id="theme2">
+                <span class="color-radio color-child2"></span>
+              </label>
+              <!-- Checkbox for color theme 3 -->
+              <label>
+                <input type="checkbox" name="color-theme" value="theme3" id="theme3">
+                <span class="color-radio color-child3"></span>
+              </label>
             </div>
-         </div>
+
+            <!-- Hidden input to store selected color values -->
+            <input type="hidden" id="selected-colors" name="selected-colors">
+          </div>
 
         </div>
         <div class="time-mins-section">
@@ -228,10 +229,10 @@
          </div>
       </div>
       
-      <div class="divider-line"></div>
+      <!-- <div class="divider-line"></div> -->
       
       <!-- Notification Section -->
-      <div class="sections-heading-bar">
+      <!-- <div class="sections-heading-bar">
         <i class="fa-solid fa-bell"></i>Notification
       </div>
       <div class="notification-settings">
@@ -245,11 +246,11 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
       
     </div>
   </div>
   <div id="saveSettingsButton" class="bottom-bar">
-    <button class="okay-bottom-bar">OK</button>
+    <button class="okay-bottom-bar">Save</button>
   </div>
 </div>

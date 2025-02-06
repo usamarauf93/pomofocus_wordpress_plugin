@@ -1,57 +1,55 @@
-// JavaScript to save settings to localStorage with named HTML elements
+
 document.addEventListener('DOMContentLoaded', () => {
     const saveSettingsButton = document.getElementById('saveSettingsButton');
     const openButton = document.getElementById('openSmallWindow');
     loadSettingsFromStorage();
+
     openButton.addEventListener('click', () => {
-      // Get the URL of the current page
-      const currentPage = window.location.href;
-  
-      // Open a new window with a width of 180px and a specified height (for example, 400px)
-      window.open(
-        currentPage,
-        "_blank",
-        "width=180,height=400,resizable=yes,scrollbars=yes"
-      );
+        const currentPage = window.location.href;
+        window.open(
+            currentPage,
+            "_blank",
+            "width=180,height=400,resizable=yes,scrollbars=yes"
+        );
     });
-    // Ticking Sound Slider
-    const rangeInputTicking = document.getElementById('myRange2');
-    const valueDisplayTicking = document.getElementById('ticking-sound-value');
-    
-    if (rangeInputTicking && valueDisplayTicking) {
-        rangeInputTicking.addEventListener('input', function() {
-            valueDisplayTicking.innerText = rangeInputTicking.value;
-        });
-    } else {
-        console.error('Ticking Sound slider or display element not found.');
-    }
+
+ 
 
     // Alarm Sound Slider
     const alarmSoundSlider = document.getElementById('myRange');
     const alarmSoundDisplay = document.getElementById('alarmSoundDisplay');
 
     if (alarmSoundSlider && alarmSoundDisplay) {
-        alarmSoundSlider.addEventListener('input', function() {
+        alarmSoundSlider.addEventListener('input', function () {
             alarmSoundDisplay.innerText = alarmSoundSlider.value;
         });
     } else {
         console.error('Alarm Sound slider or display element not found.');
     }
-    // --- Toggle (Checkbox) Active Class Code ---
-    // For all checkboxes that are inside a .switch-toggle label,
-    // add an event listener that toggles the 'active' class on the parent label.
+    // Ticking Sound Slider
+    const tickingSoundSlider = document.getElementById('myRange2');
+    const tickingSoundDisplay = document.getElementById('tickingSoundDisplay');
+
+    if (tickingSoundSlider && tickingSoundDisplay) {
+        tickingSoundSlider.addEventListener('input', function () {
+            tickingSoundDisplay.innerText = tickingSoundSlider.value;
+        });
+    } else {
+        console.error('Ticking Sound slider or display element not found.');
+    }
+
+    // Toggle (Checkbox) Active Class Code
     const toggleCheckboxes = document.querySelectorAll('.switch-toggle input[type="checkbox"]');
     toggleCheckboxes.forEach(checkbox => {
-        checkbox.addEventListener('change', function() {
-        // Use the parent element (assumed to be the label with class 'switch-toggle')
-        if (this.checked) {
-            this.parentElement.classList.add('active');
-
-        } else {
-            this.parentElement.classList.remove('active');
-        }
+        checkbox.addEventListener('change', function () {
+            if (this.checked) {
+                this.parentElement.classList.add('active');
+            } else {
+                this.parentElement.classList.remove('active');
+            }
         });
     });
+
     // Save settings when button is clicked
     saveSettingsButton.addEventListener('click', () => {
         const settings = {};
@@ -63,48 +61,37 @@ document.addEventListener('DOMContentLoaded', () => {
         settings.longBreakInterval = document.getElementById('longBreakInterval').value;
 
         // Switch settings
-        // Note: Assuming you have toggles with these IDs changed to use the 'active' class
         settings.autoStartBreaks = document.getElementById('autoStartBreaksToggle')?.parentElement.classList.contains('active') || false;
         settings.autoStartPomodoros = document.getElementById('autoStartPomodorosToggle')?.parentElement.classList.contains('active') || false;
         settings.autoCheckTasks = document.getElementById('autoCheckTasksToggle')?.parentElement.classList.contains('active') || false;
         settings.autoSwitchTasks = document.getElementById('autoSwitchTasksToggle')?.parentElement.classList.contains('active') || false;
         settings.darkModeToggle = document.getElementById('darkModeToggle')?.parentElement.classList.contains('active') || false;
         settings.repeatAlarmSound = document.getElementById('repeatSound')?.parentElement.classList.contains('active') || false;
-        
+
         // Sound settings
         settings.alarmSound = document.getElementById('alarmSound').value;
-        // For ticking sound slider, we want to save the numeric value
-        settings.tickingSoundVolume = alarmSoundDisplay.innerText;
+        settings.alarmSoundVolume = alarmSoundDisplay.innerText;
+        settings.tickingSoundVolume = tickingSoundDisplay.innerText;
         settings.tickingSound = document.getElementById('tickingSound').value;
 
-        // Notification settings
-        settings.reminderFrequency = document.getElementById('reminderFrequency')?.value || '';
+        // Color Theme settings
+        settings.colorTheme = {
+            theme1: document.querySelector('.color-child1').style.backgroundColor || pomodoroTimerSettings.theme1,
+            theme2: document.querySelector('.color-child2').style.backgroundColor || pomodoroTimerSettings.theme2,
+            theme3: document.querySelector('.color-child3').style.backgroundColor || pomodoroTimerSettings.theme3,
+        };
 
-
-
-        //repeat alarm Sound
-        settings.repeatAlarmSound = document.getElementById('repeatSound')?.value || '';
-
-        // Color Theme setting:
-        // Get the selected radio button from the color-theme group
-        const colorThemeRadios = document.getElementsByName('color-theme');
-        let selectedTheme = "";
-        for (const radio of colorThemeRadios) {
-            if (radio.checked) {
-                selectedTheme = radio.value;
-                break;
-            }
-        }
-        settings.colorTheme = selectedTheme; // can be "theme1", "theme2", or "theme3"
-
+        // Time format
         settings.timeFormat = document.getElementById('timeFormat').value;
 
         // Save settings to localStorage
         localStorage.setItem('pomodoroSettings', JSON.stringify(settings));
         alert('Settings saved successfully!');
         settingsModal.style.display = 'none';
+        window.location.reload();
     });
-    function loadSettingsFromStorage(){
+
+    function loadSettingsFromStorage() {
         const defaultSettings = {
             pomodoro: 25,
             shortBreak: 5,
@@ -117,19 +104,25 @@ document.addEventListener('DOMContentLoaded', () => {
             darkModeToggle: false,
             repeatAlarmSound: false,
             alarmSound: 'default',
+            alarmSoundVolume: 50,
             tickingSoundVolume: 50,
             tickingSound: 'default',
-            reminderFrequency: '',
-            colorTheme: 'theme1', // Default theme
-            timeFormat: '24h' // Default format
+            colorTheme: {
+                theme1: pomodoroTimerSettings.theme1, // Default color for theme1
+                theme2: pomodoroTimerSettings.theme2, // Default color for theme2
+                theme3: pomodoroTimerSettings.theme3, // Default color for theme3
+            },
+            timeFormat: '24h'
         };
+
         const savedSettings = JSON.parse(localStorage.getItem('pomodoroSettings')) || defaultSettings;
-        console.log(savedSettings);
+
         // Apply settings to form fields
         document.getElementById('pomodoroTime').value = savedSettings.pomodoro;
         document.getElementById('shortBreakTime').value = savedSettings.shortBreak;
         document.getElementById('longBreakTime').value = savedSettings.longBreak;
         document.getElementById('longBreakInterval').value = savedSettings.longBreakInterval;
+
         // Apply toggles with 'active' class and 'checked' property
         const toggleElements = [
             { id: 'autoStartBreaksToggle', value: savedSettings.autoStartBreaks },
@@ -145,23 +138,62 @@ document.addEventListener('DOMContentLoaded', () => {
             parentElement.classList.toggle('active', toggle.value);
             toggleElement.checked = toggle.value;
         });
-        document.getElementById('repeatSound').value =  savedSettings.repeatAlarmSound;
-    
+
+        document.getElementById('repeatSound').value = savedSettings.repeatAlarmSound;
         document.getElementById('alarmSound').value = savedSettings.alarmSound;
         document.getElementById('tickingSound').value = savedSettings.tickingSound;
-        document.getElementById('reminderFrequency').value = savedSettings.reminderFrequency;
-    
+
         // Apply selected color theme
-        const colorThemeRadios = document.getElementsByName('color-theme');
-        for (const radio of colorThemeRadios) {
-            radio.checked = radio.value === savedSettings.colorTheme;
-        }
-    
+        const colorSpans = document.querySelectorAll('.color-radio');
+        colorSpans.forEach(span => {
+            const themeKey = span.classList[1].replace('color-child', 'theme');
+            span.style.backgroundColor = savedSettings.colorTheme[themeKey];
+        });
+
         document.getElementById('timeFormat').value = savedSettings.timeFormat;
-    
+
         // Set volume display
         const alarmSoundDisplay = document.getElementById('alarmSoundDisplay');
+        alarmSoundDisplay.innerText = savedSettings.alarmSoundVolume;
+        document.getElementById('myRange').value = savedSettings.tickingSoundVolume;
+    
+        const tickingSoundDisplay = document.getElementById('tickingSoundDisplay');
         alarmSoundDisplay.innerText = savedSettings.tickingSoundVolume;
-        document.getElementById('myRange').value = saveSettingsButton.tickingSoundVolume;
+        document.getElementById('myRange2').value = savedSettings.tickingSoundVolume;
+    }
+
+    // Color Picker functionality
+    const colorCheckboxes = document.querySelectorAll('input[name="color-theme"]');
+    const selectedColorsInput = document.getElementById('selected-colors');
+
+    colorCheckboxes.forEach(checkbox => {
+        checkbox.addEventListener('click', function () {
+            openColorPicker(checkbox);
+        });
+    });
+
+    function openColorPicker(checkbox) {
+        const colorPicker = document.createElement('input');
+        colorPicker.type = 'color';
+        colorPicker.style.position = 'absolute';
+        colorPicker.style.left = '-9999px'; // Move off-screen
+
+        // Append color picker to the body
+        document.body.appendChild(colorPicker);
+
+        // Trigger color picker
+        colorPicker.click();
+
+        // Handle color picker change event
+        colorPicker.addEventListener('change', function () {
+            const selectedColor = colorPicker.value;
+
+            // Update the corresponding color span
+            const colorSpan = checkbox.nextElementSibling;
+            colorSpan.style.backgroundColor = selectedColor;
+
+            // Remove the color picker from the DOM
+            document.body.removeChild(colorPicker);
+        });
     }
 });

@@ -4,7 +4,7 @@
  * Plugin URI: https://technstack.com
  * Description: A WordPress Pomodoro timer plugin based on Pomofocus.io, with no user logins required.
  * Version: 1.0
- * Author: Usama & Rizwan
+ * Author: Usama Rauf (usamarauf93@gmail.com)
  * Author URI: https://technstack.com
  * License: GPL2
  * Text Domain: pomodoro-timer
@@ -62,10 +62,19 @@ function pomodoro_timer_enqueue_assets() {
         );
 
         // Pass settings to JS
-        wp_localize_script('pomodoro-timer-script', 'PomodoroTimerSettings', array(
-            'primaryColor'    => '#38b6ff',
-            'secondaryColor'  => '#ffffff',
-            'backgroundColor' => '#d9d9d9',
+        wp_localize_script('pomodoro-timer-script', 'pomodoroTimerSettings', array(
+            'colorTheme' => [
+                'theme1' => 'rgb(186, 73, 73)',
+                'theme2' => 'rgb(56, 133, 138)',
+                'theme3' => 'rgb(57, 112, 151)'
+            ],
+            'tickFast' => plugins_url('assets/sounds/tickingFast.mp3', __FILE__),
+            'tickSlow' => plugins_url('assets/sounds/tickingSlow.mp3', __FILE__),
+            'alarm' => plugins_url('assets/sounds/alarm.mp3', __FILE__),
+            'bird' => plugins_url('assets/sounds/bird.mp3', __FILE__),
+            'digital' => plugins_url('assets/sounds/digital.mp3', __FILE__),
+            'kitchen' => plugins_url('assets/sounds/kitchen.mp3', __FILE__),
+            'wood' => plugins_url('assets/sounds/wood.mp3', __FILE__)
             // Add more settings as needed
         ));
     }
@@ -80,6 +89,8 @@ function pomodoro_timer_shortcode($atts) {
     $atts = shortcode_atts(
         array(
             'duration' => '25', // Default duration in minutes
+            'width'    => '1900px', // Default width
+            'height'   => '800px', // Default height
         ),
         $atts,
         'pomodoro_timer'
@@ -87,10 +98,8 @@ function pomodoro_timer_shortcode($atts) {
 
     // Sanitize and prepare variables
     $duration = intval($atts['duration']);
-
-    // Make variables available to the view if needed
-    // You can pass variables via global scope or use other methods
-    // For simplicity, variables can be accessed directly in the view
+    $width = esc_attr($atts['width']);
+    $height = esc_attr($atts['height']);
 
     ob_start();
 
@@ -99,7 +108,9 @@ function pomodoro_timer_shortcode($atts) {
 
     // Check if the file exists to prevent errors
     if (file_exists($file_path)) {
+        echo '<div class="pomodoro-timer-container" style="min-width:' . $width . '; min-height:' . $height . '; overflow: auto;">';
         include $file_path;
+        echo '</div>';
     } else {
         echo '<p>Frontend view not found.</p>';
     }
@@ -107,6 +118,7 @@ function pomodoro_timer_shortcode($atts) {
     return ob_get_clean();
 }
 add_shortcode('pomodoro_timer', 'pomodoro_timer_shortcode');
+
 
 /**
  * Activation Hook

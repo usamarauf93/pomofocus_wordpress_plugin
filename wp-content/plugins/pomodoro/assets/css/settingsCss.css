@@ -346,7 +346,7 @@
   }
 
   /* Hide the actual radio button */
-    input[type="radio"][name="color-theme"] {
+    input[type="checkbox"][name="color-theme"] {
         display: none;
     }
   
@@ -365,12 +365,6 @@
   .color-child1 { background-color: rgb(186, 73, 73); }
   .color-child2 { background-color: rgb(56, 133, 138); }
   .color-child3 { background-color: rgb(57, 112, 151); }
-  
-  /* When the radio is checked, add a border or other visual indicator */
-  input[type="radio"][name="color-theme"]:checked + .color-radio {
-    width: 40px;
-    height: 40px;
-  }
   
 
 
