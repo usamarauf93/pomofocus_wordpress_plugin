@@ -76,9 +76,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Color Theme settings
         settings.colorTheme = {
-            theme1: document.querySelector('.color-child1').style.backgroundColor || '#FFFFFF',
-            theme2: document.querySelector('.color-child2').style.backgroundColor || '#FFFFFF',
-            theme3: document.querySelector('.color-child3').style.backgroundColor || '#FFFFFF',
+            theme1: document.querySelector('.color-child1').style.backgroundColor || pomodoroTimerSettings.theme1,
+            theme2: document.querySelector('.color-child2').style.backgroundColor || pomodoroTimerSettings.theme2,
+            theme3: document.querySelector('.color-child3').style.backgroundColor || pomodoroTimerSettings.theme3,
         };
 
         // Time format
@@ -108,9 +108,9 @@ document.addEventListener('DOMContentLoaded', () => {
             tickingSoundVolume: 50,
             tickingSound: 'default',
             colorTheme: {
-                theme1: '#FF0000', // Default color for theme1
-                theme2: '#00FF00', // Default color for theme2
-                theme3: '#0000FF', // Default color for theme3
+                theme1: pomodoroTimerSettings.theme1, // Default color for theme1
+                theme2: pomodoroTimerSettings.theme2, // Default color for theme2
+                theme3: pomodoroTimerSettings.theme3, // Default color for theme3
             },
             timeFormat: '24h'
         };

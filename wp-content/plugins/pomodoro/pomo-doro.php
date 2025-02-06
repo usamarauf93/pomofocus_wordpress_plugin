@@ -66,7 +66,7 @@ function pomodoro_timer_enqueue_assets() {
             'colorTheme' => [
                 'theme1' => 'rgb(186, 73, 73)',
                 'theme2' => 'rgb(56, 133, 138)',
-                'theme3' => 'rgb(57, 112, 151)  '
+                'theme3' => 'rgb(57, 112, 151)'
             ],
             'tickFast' => plugins_url('assets/sounds/tickingFast.mp3', __FILE__),
             'tickSlow' => plugins_url('assets/sounds/tickingSlow.mp3', __FILE__),
