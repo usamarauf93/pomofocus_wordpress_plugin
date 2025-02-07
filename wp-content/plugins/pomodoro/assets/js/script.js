@@ -236,6 +236,9 @@ function switchTab(index) {
     startButton.textContent = 'START';
     startButton.style.color =  tabs[index].getAttribute('data-bg');
     isRunning = false;
+
+    const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+    renderTasks(tasks)
 }
 
 // Add event listener for the forward button
@@ -253,6 +256,22 @@ document.getElementById('forwardButton').addEventListener('click', () => {
 // Start the timer
 function startTimer(duration,activeTimerType) {
     let [minutes, seconds] = duration.split(':').map(Number);
+    const savedSettings = JSON.parse(localStorage.getItem('pomodoroSettings'));
+    if(timerDisplay.getAttribute('data-tabActive') == 'pomodoro'){
+        // Retrieve the full list of tasks from local storage
+        const tasks = JSON.parse(localStorage.getItem('tasks'));
+
+        // Create a new tasks array with the updated values for tasks where running is true
+        const updatedTasks = tasks.map(task => {
+        if (task.done === false) {
+            return { ...task,  running: true };
+        }
+        return task;
+        });
+
+        // Save the entire updated tasks array back to local storage
+        localStorage.setItem('tasks', JSON.stringify(updatedTasks));
+    }
 
     intervalId = setInterval(() => {
         if (seconds === 0) {
@@ -262,6 +281,36 @@ function startTimer(duration,activeTimerType) {
                 alarmSound.play();
                 tickSound.pause();
                 isRunning = false;
+                // console.log(savedSettings.autoCheckTasks, 'autoCheckTasks', savedSettings.autoCheckTasks && timerDisplay.getAttribute('data-tabActive') == 'pomodoro');
+                if(savedSettings.autoCheckTasks  && timerDisplay.getAttribute('data-tabActive') == 'pomodoro'){
+                    // Retrieve the full list of tasks from local storage
+                    const tasks = JSON.parse(localStorage.getItem('tasks'));
+
+                    // Create a new tasks array with the updated values for tasks where running is true
+                    const updatedTasks = tasks.map(task => {
+                    if (task.running === true) {
+                        return { ...task, done: true, running: false };
+                    }
+                    return task;
+                    });
+
+                    // Save the entire updated tasks array back to local storage
+                    localStorage.setItem('tasks', JSON.stringify(updatedTasks));
+                }
+                if(savedSettings.autoStartBreaks && timerDisplay.getAttribute('data-tabActive') == 'pomodoro'){
+                    // task get settings
+                    // current running task , mark as done
+                    document.getElementById('theme2tab').click();
+                    document.getElementById('start-button').click();
+                }
+                else if(savedSettings.autoStartPomodoros && timerDisplay.getAttribute('data-tabActive') == 'shortBreak'){
+
+                    document.getElementById('theme1tab').click();
+                    document.getElementById('start-button').click();
+                }else{
+                    console.log('on long breAK')
+                }
+                
                 return;
             }
             minutes--;
@@ -336,9 +385,9 @@ saveTaskButton.addEventListener('click', () => {
 
     if (editingRow !== null) {
         const index = editingRow.dataset.index;
-        tasks[index] = { name: taskName, pomodoros, note: taskNote, done: tasks[index].done || false };
+        tasks[index] = { name: taskName, pomodoros, note: taskNote, done: tasks[index].done || false,  running: tasks[index].running || false };
     } else {
-        tasks.push({ name: taskName, pomodoros, note: taskNote, done: false });
+        tasks.push({ name: taskName, pomodoros, note: taskNote, done: false , running: false});
     }
 
     saveTasks(tasks);
