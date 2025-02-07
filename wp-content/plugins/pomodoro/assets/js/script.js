@@ -260,7 +260,7 @@ function startTimer(duration,activeTimerType) {
     if(timerDisplay.getAttribute('data-tabActive') == 'pomodoro'){
         // Retrieve the full list of tasks from local storage
         const tasks = JSON.parse(localStorage.getItem('tasks'));
-
+       
         // Create a new tasks array with the updated values for tasks where running is true
         const updatedTasks = tasks.map(task => {
         if (task.done === false) {
@@ -268,7 +268,7 @@ function startTimer(duration,activeTimerType) {
         }
         return task;
         });
-
+        
         // Save the entire updated tasks array back to local storage
         localStorage.setItem('tasks', JSON.stringify(updatedTasks));
     }
@@ -333,6 +333,14 @@ function startTimer(duration,activeTimerType) {
 startButton.addEventListener('click', () => {
     const activeTabType = startButton.getAttribute('data-tabActive'); // Get the active tab type
     // console.log(activeTabType);
+    //Check if there is pending task then run the timer
+    const tasks = JSON.parse(localStorage.getItem('tasks'));
+    const pendingTasks = tasks.filter(task => task.done === false);
+    console.log('updatedTasks.length',pendingTasks);
+    if(pendingTasks.length < 1){
+        alert('No Pending task to work on ...')
+        return false;
+    }
     if (isRunning) {
         clearInterval(intervalId);
         startButton.textContent = 'START';
