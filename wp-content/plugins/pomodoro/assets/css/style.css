@@ -79,7 +79,9 @@ main{
     align-items: center;
     margin: 0 auto;
 }
-
+button #theme1tab {
+    padding: 5px !important;
+}
 .tabs {
 	display: flex;
 	gap: 10px;
@@ -88,9 +90,9 @@ main{
 
 .tab {
 	color: white;
-	padding: 0px 10px;
+	padding: 5px 10px !important;
 	cursor: pointer;
-	border: none;
+	border: none !important;
 	box-shadow: none;
 	border-radius: 5px;
 	background-color: transparent;
@@ -99,7 +101,7 @@ main{
 
 .tab:hover {
 	color: white;
-
+	border: none !important;
 	cursor: pointer;
 	border: none;
 	box-shadow: none;
@@ -111,6 +113,7 @@ main{
 .tab.active {
 	background-color: rgb(0 0 0 / 15%);
 	color: white;
+	border: none !important;
 	font-weight: bold;
 }
 
@@ -215,37 +218,50 @@ main{
 
 
 .table-head {
-
+	
 	line-height: 30px;
 	font-size: 16px;
 	font-weight: 700;
-	color: rgb(255, 255, 255);
-
+	color: rgb(0, 0, 0);
+	
 	/* border-bottom: 2px solid rgba(255, 255, 255, 0.766); */
-	background-color: transparent;
+	background: transparent !important;
+	/* border: 1px solid #000000; */
 
 }
-
+th{
+	padding-left: 10px;
+    text-align: left;
+}
+th:nth-child(4) {
+	text-align: center;
+  }
 
 table {
 
 	width: 100%;
 	border-collapse: collapse;
 	margin-top: 20px;
+	border-radius: 5px  !important;
+	background: #fff !important;
 
 }
-
+#taskTableBody{
+	background: transparent !important;
+}
 
 td {
+	
+    text-align: left;
 	margin-top: 5px;
 	row-gap: 20px;
 
 	padding: 10px;
-	background: white;
+	background: transparent !important;
 	font-size: 16px;
 	font-weight: 700;
 
-	color: rgb(84, 84, 84);
+	color: rgb(0, 0, 0);
 }
 
 
@@ -470,6 +486,12 @@ header{
         .timer {
             font-size: 58px;
         }
+		.tabs{
+			display: none;
+		}
+		.start-button{
+			display: none;
+		}
 		.todo-container{
 			display:none;
 		}

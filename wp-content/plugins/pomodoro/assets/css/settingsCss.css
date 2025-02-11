@@ -1,3 +1,10 @@
+@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css");
+    
+    .body{
+
+      border: none !important;
+    }    
+    
     .setting-content {
     background-color: white;
     border-radius: 5px;
@@ -9,6 +16,11 @@
     font-weight: bold;
     text-align: center;
     }
+    .modal-content {
+      padding:0px !important;
+      
+    }
+   
     .settingP{
     font-size: 15px;
     color: rgb(170, 170, 170);
@@ -161,7 +173,9 @@
     box-sizing: border-box;
     width: 70px;
     }
-
+    input#longBreakInterval {
+      width: 15%;
+    }
     .heading-aligned-spacing{
     color: rgb(85, 85, 85);
     font-weight: bold;
@@ -180,10 +194,17 @@
     gap: 0 5px;
     }
     .dropdown-item-select-inner {
-    width: 130px;
-    display: block;
-    position: relative;
-    font-size: 14px;
+      cursor: pointer;
+      position: relative;
+      width: 100%;
+      color: rgb(120, 120, 120);
+      font-weight: 500;
+      user-select: none;
+      border-radius: 4px;
+      background-color: rgb(235, 235, 235);
+      padding: 12px;
+      box-sizing: border-box;
+      font-size: 14px;
     }
     .dropdown-padding {
     cursor: pointer;
@@ -243,11 +264,24 @@
     border: 2px solid rgb(34, 34, 34);
     display: inline-block;
     }
+    input#myRange {
+      border: none !important;
+    }
+    input#myRange:active {
+      border: 1px solid white !important;
+    }
+    input#repeatSound {
+      width: 15%;
+      margin: 5px;
+    }
     .repeat-counter{
-    display: flex;
-    align-items: center;
+        display: flex
+;
+    -webkit-box-pack: end;
     justify-content: flex-end;
-    gap: 10px;
+    -webkit-box-align: center;
+    align-items: center;
+    margin-top: 22px;
     }
     .repeat-input-field{
     width:15%;
@@ -284,7 +318,16 @@
     ;
     gap: 0.7rem;
     }
+    /*dark mode */
 
+    #darkModeToggle:active{
+      background-color: #000 !important;
+    }
+
+    .dark-mode {
+      background-color: #121212;
+      color: #e0e0e0;
+    }
 
     /* Container for the toggle switch */
 .switch-toggle {
@@ -324,7 +367,9 @@
     background-color: white;
     transition: .4s;
   }
-  
+  button#openSmallWindow {
+    width: 25%;
+  }
   /* Toggle checked state – note the sibling selector */
   /* Ensure your HTML structure allows for the adjacent sibling combinator */
   .input-checkbox:checked + .switch-circle {
@@ -366,7 +411,7 @@
   .color-child2 { background-color: rgb(56, 133, 138); }
   .color-child3 { background-color: rgb(57, 112, 151); }
   
-
+  
 
 @media (min-width: 180px) {
 
