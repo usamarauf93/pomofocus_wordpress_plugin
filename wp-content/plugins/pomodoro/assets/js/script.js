@@ -6,11 +6,11 @@ const mainDiv = document.querySelector('.maindiv');
 const tabs = document.querySelectorAll('.tab');
 const timerDisplay = document.querySelector('.timer');
 const startButton = document.querySelector('.start-button');
-const taskModal = document.getElementById('taskModal');
+const taskModal = document.querySelector('#taskModal');
 const addTaskButton = document.querySelector('.add-task-button');
 
-const cancelTaskButton = document.getElementById('cancelTask');
-const saveTaskButton = document.getElementById('saveTask');
+const cancelTaskButton = document.querySelector('#cancelTask');
+const saveTaskButton = document.querySelector('#saveTask');
 const taskNameInput = document.getElementById('taskName');
 
 const pomodorosInput = document.getElementById('pomodoros');
@@ -147,9 +147,9 @@ function loadSettings() {
     const theme3Tab = document.getElementById('theme3tab');
 
     if (theme1Tab && theme2Tab && theme3Tab) {
-        theme1Tab.setAttribute('data-bg', savedSettings.colorTheme.theme1);
-        theme2Tab.setAttribute('data-bg', savedSettings.colorTheme.theme2);
-        theme3Tab.setAttribute('data-bg', savedSettings.colorTheme.theme3);
+        theme1Tab.setAttribute('data-bg', savedSettings.colorTheme?.theme1 || defaultSettings.colorTheme.theme1);
+        theme2Tab.setAttribute('data-bg', savedSettings.colorTheme?.theme2 || defaultSettings.colorTheme.theme2);
+        theme3Tab.setAttribute('data-bg', savedSettings.colorTheme?.theme3 || defaultSettings.colorTheme.theme3);
 
         // Optionally, update the background color of the active tab
         const activeTab = document.querySelector('.tab.active');
@@ -169,10 +169,11 @@ function loadSettings() {
         // Update the timer display
         timerDisplay.textContent = formatTime(timeValue);
         mainDiv.style.backgroundColor = activeTab.getAttribute('data-bg');
+        pomodoroTimerContainer.style.backgroundColor = activeTab.getAttribute('data-bg');
     } else {
         // If no tab is active, set to default Pomodoro
         timerDisplay.textContent = formatTime(defaultSettings.pomodoro);
-        pomodoroTimerContainer.style.backgroundColor = '#BA4949'; // Default background color for Pomodoro
+        pomodoroTimerContainer.style.backgroundColor = defaultSettings.colorTheme.theme1; // Default background color for Pomodoro
     }
     if(savedSettings.tickingSound && savedSettings.alarmSound){
         tickSound = new Audio(pomodoroTimerSettings[savedSettings.tickingSound]); 
@@ -183,6 +184,11 @@ function loadSettings() {
         
         alarmSound.volume = parseFloat((savedSettings.alarmSoundVolume/100).toFixed(1));
         tickSound.volume = parseFloat((savedSettings.tickingSoundVolume / 100).toFixed(1));
+    }
+    if(savedSettings.darkModeToggle){
+        pomodoroTimerContainer.style.backgroundColor = "#000";
+        mainDiv.style.backgroundColor = "#000";
+        document.querySelector('.todo-container>table').style.backgroundColor = '#000';
     }
 
 }
@@ -238,7 +244,12 @@ function switchTab(index) {
     isRunning = false;
 
     const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
-    renderTasks(tasks)
+    renderTasks(tasks);
+    if(savedSettings.darkModeToggle){
+        pomodoroTimerContainer.style.backgroundColor = "#000";
+        mainDiv.style.backgroundColor = "#000";
+        document.querySelector('.todo-container>table').style.backgroundColor = '#000';
+    }
 }
 
 // Add event listener for the forward button
@@ -254,93 +265,116 @@ document.getElementById('forwardButton').addEventListener('click', () => {
 });
 
 // Start the timer
-function startTimer(duration,activeTimerType) {
+function startTimer(duration, activeTimerType) {
     let [minutes, seconds] = duration.split(':').map(Number);
-    const savedSettings = JSON.parse(localStorage.getItem('pomodoroSettings'));
-    if(timerDisplay.getAttribute('data-tabActive') == 'pomodoro'){
-        // Retrieve the full list of tasks from local storage
-        const tasks = JSON.parse(localStorage.getItem('tasks'));
-       
-        // Create a new tasks array with the updated values for tasks where running is true
+    const savedSettings = JSON.parse(localStorage.getItem('pomodoroSettings')) || {};
+    const isPomodoro = timerDisplay.getAttribute('data-tabActive') === 'pomodoro';
+
+    // Update tasks when the timer starts (only for pomodoro)
+    if (isPomodoro) {
+        const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+        let hasMarkedRunning = false;
+
         const updatedTasks = tasks.map(task => {
-        if (task.done === false) {
-            return { ...task,  running: true };
-        }
-        return task;
+            if (!task.done && !hasMarkedRunning) {
+                hasMarkedRunning = true; // Mark the first not-done task as running
+                return { ...task, running: true };
+            }
+            return { ...task, running: false }; // Ensure other tasks are not running
         });
-        
-        // Save the entire updated tasks array back to local storage
         localStorage.setItem('tasks', JSON.stringify(updatedTasks));
     }
 
+    // Start the timer
     intervalId = setInterval(() => {
         if (seconds === 0) {
             if (minutes === 0) {
+                console.log('I am callled')
                 clearInterval(intervalId);
                 startButton.textContent = 'START';
-                alarmSound.play();
-                tickSound.pause();
                 isRunning = false;
-                // console.log(savedSettings.autoCheckTasks, 'autoCheckTasks', savedSettings.autoCheckTasks && timerDisplay.getAttribute('data-tabActive') == 'pomodoro');
-                if(savedSettings.autoCheckTasks  && timerDisplay.getAttribute('data-tabActive') == 'pomodoro'){
-                    // Retrieve the full list of tasks from local storage
-                    const tasks = JSON.parse(localStorage.getItem('tasks'));
 
-                    // Create a new tasks array with the updated values for tasks where running is true
-                    const updatedTasks = tasks.map(task => {
-                    if (task.running === true) {
-                        return { ...task, done: true, running: false };
-                    }
-                    return task;
-                    });
+                // Play alarm sound
+                playAlarmSound(savedSettings);
 
-                    // Save the entire updated tasks array back to local storage
+                // Handle task completion (only for pomodoro)
+                if (isPomodoro && savedSettings.autoCheckTasks) {
+                    const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+                    console.log(tasks,'====tasks');
+                    const updatedTasks = tasks.map(task => ({
+                        ...task,
+                        done: task.running ? true : task.done, // Mark running tasks as done
+                        running: false // Reset running state
+                    }));
+                    console.log('updated task array',updatedTasks);
                     localStorage.setItem('tasks', JSON.stringify(updatedTasks));
                 }
-                if(savedSettings.autoStartBreaks && timerDisplay.getAttribute('data-tabActive') == 'pomodoro'){
-                    // task get settings
-                    // current running task , mark as done
+
+                // Auto-start breaks or pomodoros
+                if (savedSettings.autoStartBreaks && isPomodoro) {
                     document.getElementById('theme2tab').click();
                     document.getElementById('start-button').click();
-                }
-                else if(savedSettings.autoStartPomodoros && timerDisplay.getAttribute('data-tabActive') == 'shortBreak'){
-
+                } else if (savedSettings.autoStartPomodoros && !isPomodoro) {
                     document.getElementById('theme1tab').click();
                     document.getElementById('start-button').click();
-                }else{
-                    console.log('on long breAK')
                 }
-                
+
                 return;
             }
             minutes--;
             seconds = 59;
         } else {
-            tickSound.play();
             seconds--;
+            tickSound.play();
         }
-        // console.log(timerDisplay.getAttribute('data-tabActive'));
-        if(timerDisplay.getAttribute('data-tabActive') == activeTimerType ){
+
+        // Update the timer display
+        if (timerDisplay.getAttribute('data-tabActive') === activeTimerType) {
             timerDisplay.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-        }else{
+        } else {
             startButton.textContent = 'START';
             timerDisplay.textContent = savedSettings[formattedTimerType];
         }
     }, 1000);
 }
 
+// Helper function to play alarm sound
+function playAlarmSound(savedSettings) {
+    if (savedSettings.repeatAlarmSound && savedSettings.repeatAlarmSound > 1) {
+        const alarmDuration = parseFloat(alarmSound.duration * 1000).toFixed(5); // Convert duration to milliseconds
+        let repeatCount = savedSettings.repeatAlarmSound;
+
+        const playAlarm = () => {
+            if (repeatCount > 0) {
+                console.log('repeatCount',repeatCount);
+                alarmSound.play();
+                repeatCount--;
+                setTimeout(playAlarm, alarmDuration);
+            }
+        };
+
+        playAlarm(); // Start the first play
+    } else {
+        alarmSound.play(); // Play the sound once
+    }
+}
+
 // Handle start/pause button
 startButton.addEventListener('click', () => {
     const activeTabType = startButton.getAttribute('data-tabActive'); // Get the active tab type
-    // console.log(activeTabType);
+    console.log(activeTabType,'i am working');
     //Check if there is pending task then run the timer
     const tasks = JSON.parse(localStorage.getItem('tasks'));
-    const pendingTasks = tasks.filter(task => task.done === false);
-    console.log('updatedTasks.length',pendingTasks);
-    if(pendingTasks.length < 1){
-        alert('No Pending task to work on ...')
-        return false;
+    if(tasks){
+        const pendingTasks = tasks.filter(task => task.done === false);
+        console.log('updatedTasks.length',pendingTasks);
+        if(pendingTasks.length < 1){
+            alert('No Pending task to work on ...')
+            return false;
+        }
     }
+
+   
     if (isRunning) {
         clearInterval(intervalId);
         startButton.textContent = 'START';
@@ -361,6 +395,7 @@ startButton.addEventListener('click', () => {
 // Load tasks and settings on page load
 document.addEventListener('DOMContentLoaded', () => {
     loadSettings();
+    loadTasks();
     const tabsArray = Array.from(tabs);
     const activeTab = tabsArray.find(tab => tab.classList.contains('active'));
     if (activeTab) {
@@ -425,38 +460,49 @@ increasePomodoro.addEventListener('click', () => {
 
 
 function updateFinishAt(taskPomodoros, pomodoroDuration) {
-    // console.log(taskPomodoros, pomodoroDuration);
+    const defaultSettings = {
+        pomodoro: 25,
+        shortBreak: 5,
+        longBreak: 15,
+        timeFormat:'12-hour'
+    };
+
+    const savedSettings = JSON.parse(localStorage.getItem('pomodoroSettings')) || defaultSettings;
+
     // Convert pomodoroDuration (HH:MM) to total minutes
     const [minutes, seconds] = pomodoroDuration.split(':').map(Number);
     const totalPomodoroMinutes = minutes;
 
     // Calculate total time required based on the number of pomodoros
     const totalMinutes = taskPomodoros * totalPomodoroMinutes;
-    // console.log('total minutes', totalMinutes);
+
     // Get the current time
     const currentTime = new Date();
 
     // Calculate finish time by adding total minutes to the current time
     currentTime.setMinutes(currentTime.getMinutes() + totalMinutes);
 
-    // Format the finish time into a readable format
-    const finishHours = currentTime.getHours();
+    // Format the finish time based on the time format setting
+    let finishHours = currentTime.getHours();
     const finishMinutes = currentTime.getMinutes();
-    const formattedFinishTime = `${String(finishHours).padStart(2, '0')}:${String(finishMinutes).padStart(2, '0')}`;
+
+    let formattedFinishTime;
+    if (savedSettings.timeFormat === '12-hour') {
+        // Convert to 12-hour format
+        const period = finishHours < 12 ? 'AM' : 'PM';
+        finishHours = finishHours % 12 || 12; // Handle 0 hours (convert to 12)
+        formattedFinishTime = `${String(finishHours).padStart(2, '0')}:${String(finishMinutes).padStart(2, '0')} ${period}`;
+    } else {
+        // Keep as 24-hour format
+        formattedFinishTime = `${String(finishHours).padStart(2, '0')}:${String(finishMinutes).padStart(2, '0')}`;
+    }
 
     // Display total minutes and finish time
     document.getElementById('finishAt').textContent = `Finish At (${formattedFinishTime})`; // Display the finish time
-    updateHoursCount();
+    updateHoursCount(savedSettings);
 }
 // Function to calculate and update hours count
-function updateHoursCount() {
-    const defaultSettings = {
-        pomodoro: 25,
-        shortBreak: 5,
-        longBreak: 15
-    };
-
-    const savedSettings = JSON.parse(localStorage.getItem('pomodoroSettings')) || defaultSettings;
+function updateHoursCount(savedSettings) {
 
     const tasksString = localStorage.getItem('tasks');
     const tasksArray = tasksString ? JSON.parse(tasksString) : [];
@@ -465,5 +511,3 @@ function updateHoursCount() {
     console.log('savedSettings.pomodoro',savedSettings.pomodoro,totalPomodoros)
     document.getElementById('hoursCount').textContent = `(${totalHours.toFixed(1)}h)`; // Display hours with 1 decimal place
 }
-// Load tasks on page load
-document.addEventListener('DOMContentLoaded', loadTasks);

@@ -133,7 +133,7 @@
          </div>
           <div class="repeat-counter" >
             repeat
-            <input type="number" min="1" step="1" id="repeatSound" class="counter-input-field repeat-input-field" value="1">
+            <input type="number" min="1" step="1" id="repeatSoundCount" class="counter-input-field repeat-input-field" value="1">
           </div>
         </div>
         <div class="time-mins-section">

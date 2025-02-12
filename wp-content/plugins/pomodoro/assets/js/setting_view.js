@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
         window.open(
             currentPage,
             "_blank",
-            "width=180,height=400,resizable=yes,scrollbars=yes"
+            "width=200,height=500,resizable=yes,scrollbars=yes"
         );
     });
 
@@ -66,7 +66,7 @@ document.addEventListener('DOMContentLoaded', () => {
         settings.autoCheckTasks = document.getElementById('autoCheckTasksToggle')?.parentElement.classList.contains('active') || false;
         settings.autoSwitchTasks = document.getElementById('autoSwitchTasksToggle')?.parentElement.classList.contains('active') || false;
         settings.darkModeToggle = document.getElementById('darkModeToggle')?.parentElement.classList.contains('active') || false;
-        settings.repeatAlarmSound = document.getElementById('repeatSound')?.parentElement.classList.contains('active') || false;
+        settings.repeatAlarmSound = document.getElementById('repeatSoundCount').value
 
         // Sound settings
         settings.alarmSound = document.getElementById('alarmSound').value;
@@ -102,7 +102,7 @@ document.addEventListener('DOMContentLoaded', () => {
             autoCheckTasks: false,
             autoSwitchTasks: false,
             darkModeToggle: false,
-            repeatAlarmSound: false,
+            repeatAlarmSound: 1,
             alarmSound: 'default',
             alarmSoundVolume: 50,
             tickingSoundVolume: 50,
@@ -139,7 +139,7 @@ document.addEventListener('DOMContentLoaded', () => {
             toggleElement.checked = toggle.value;
         });
 
-        document.getElementById('repeatSound').value = savedSettings.repeatAlarmSound;
+        document.getElementById('repeatSoundCount').value = savedSettings.repeatAlarmSound;
         document.getElementById('alarmSound').value = savedSettings.alarmSound;
         document.getElementById('tickingSound').value = savedSettings.tickingSound;
 

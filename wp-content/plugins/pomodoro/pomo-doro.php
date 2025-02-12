@@ -26,30 +26,20 @@ function pomodoro_timer_enqueue_assets() {
             'pomodoro-timer-style',
             plugin_dir_url(__FILE__) . 'assets/css/style.css',
             array(), // No dependencies
-            '1.0.0'  // Version number
+            time(),  // Version number
         );
-            // Enqueue the settings-specific CSS.
-
-
-
         wp_enqueue_style(
             'pomodoro-timer-settings-style',  // Changed handle to be unique
             plugin_dir_url(__FILE__) . 'assets/css/settingsCss.css',
             array(), // No dependencies
-            '1.0.0'
+            time(),
         );
-
-
-
-     
-
-
         // Enqueue the JS file
         wp_enqueue_script(
             'pomodoro-timer-script',
             plugin_dir_url(__FILE__) . 'assets/js/script.js',
             array('jquery'), // Dependencies
-            '1.0.0', // Version number
+           time(), // Version number
             true      // Load in footer
         );
         // Enqueue the JS file
@@ -57,7 +47,7 @@ function pomodoro_timer_enqueue_assets() {
             'pomodoro-timer-script2',
             plugin_dir_url(__FILE__) . 'assets/js/setting_view.js',
             array('jquery'), // Dependencies
-            '1.0.0', // Version number
+            time(), // Version number
             true      // Load in footer
         );
 

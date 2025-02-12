@@ -16,7 +16,7 @@
     font-weight: bold;
     text-align: center;
     }
-    .modal-content {
+    #settings_content_id {
       padding:0px !important;
       
     }
@@ -270,7 +270,7 @@
     input#myRange:active {
       border: 1px solid white !important;
     }
-    input#repeatSound {
+    input#repeatSoundCount {
       width: 15%;
       margin: 5px;
     }
