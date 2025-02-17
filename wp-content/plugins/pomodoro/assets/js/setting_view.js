@@ -1,17 +1,17 @@
 
 document.addEventListener('DOMContentLoaded', () => {
     const saveSettingsButton = document.getElementById('saveSettingsButton');
-    const openButton = document.getElementById('openSmallWindow');
+    // const openButton = document.getElementById('openSmallWindow');
     loadSettingsFromStorage();
 
-    openButton.addEventListener('click', () => {
-        const currentPage = window.location.href;
-        window.open(
-            currentPage,
-            "_blank",
-            "width=200,height=500,resizable=yes,scrollbars=yes"
-        );
-    });
+    // openButton.addEventListener('click', () => {
+    //     const currentPage = window.location.href;
+    //     window.open(
+    //         currentPage,
+    //         "_blank",
+    //         "width=200,height=500,resizable=yes,scrollbars=yes"
+    //     );
+    // });
 
  
 

@@ -69,34 +69,71 @@ function updateCounter() {
 }
 // Render tasks in the table
 function renderTasks(tasks) {
-    taskTableBody.innerHTML = '';
-    tasks.forEach((task, index) => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-            <td>
-                <button class="check-btn" data-index="${index}">${task.done ? '✓' : '◻'}</button>
-                ${task.name}
-            </td>
-            <td>${task.pomodoros}</td>
-            <td>${task.note || '—'}</td>
-            <td>
-                <div class="action-buttons">
-                    <button class="edit-btn" data-index="${index}">Edit</button>
-                    <button class="delete-btn" data-index="${index}">Delete</button>
-                </div>
-            </td>
-        `;
-        if (task.done) {
-            row.style.textDecoration = 'line-through';
-        }
-        taskTableBody.appendChild(row);
+    // Create a sorted copy of the tasks array
+    const sortedTasks = tasks.slice().sort((a, b) => {
+      if (a.done && !b.done) {
+        return 1; // Move 'a' (done task) after 'b' (not done task)
+      } else if (!a.done && b.done) {
+        return -1; // Move 'a' (not done task) before 'b' (done task)
+      } else {
+        return 0; // Keep the order unchanged
+      }
     });
-    const taskRunning =  tasks.filter(task => task.done === false);
-    if(taskRunning.length)
-        document.getElementById('running-task').textContent = tasks.filter(task => task.done === false)[0].name;
+  
+    // Clear the table body
+    taskTableBody.innerHTML = '';
+  
+    // Render the sorted tasks
+    sortedTasks.forEach((task, index) => {
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td>
+          <button class="check-btn" data-index="${tasks.indexOf(task)}">${task.done ? '✓' : '◻'}</button>
+          ${task.name}
+        </td>
+        <td>${task.pomodoros}</td>
+        <td>${task.note || '—'}</td>
+        <td>
+          <div class="action-buttons">
+            <button class="edit-btn" data-index="${tasks.indexOf(task)}">Edit</button>
+            <button class="delete-btn" data-index="${tasks.indexOf(task)}">Delete</button>
+          </div>
+        </td>
+      `;
+      if (task.done) {
+        row.style.textDecoration = 'line-through';
+      }
+      taskTableBody.appendChild(row);
+    });
+  
+    // Update the running task
+    const taskRunning = tasks.filter(task => !task.done);
+    if (taskRunning.length) {
+      document.getElementById('running-task').textContent = taskRunning[0].name;
+    }
+  
+    // Update the counter
     updateCounter();
-    updateCounter();
-}
+  
+    // Apply dark mode styles if enabled
+    const savedSettings = JSON.parse(localStorage.getItem('pomodoroSettings')) || defaultSettings;
+    if (savedSettings.darkModeToggle) {
+      pomodoroTimerContainer.style.backgroundColor = "#000";
+      mainDiv.style.backgroundColor = "#000";
+      document.querySelector('.todo-container>table').style.backgroundColor = '#000';
+  
+      setTimeout(() => {
+        const tdElements = document.querySelectorAll('.todo-container table tbody tr td');
+        if (tdElements.length > 0) {
+          tdElements.forEach(td => {
+            td.style.color = '#fff';
+          });
+        } else {
+          console.error('No td elements were found in the DOM.');
+        }
+      }, 1000); // Adjust the delay as needed
+    }
+  }
 taskTableBody.addEventListener('click', (event) => {
     const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
 
@@ -189,6 +226,16 @@ function loadSettings() {
         pomodoroTimerContainer.style.backgroundColor = "#000";
         mainDiv.style.backgroundColor = "#000";
         document.querySelector('.todo-container>table').style.backgroundColor = '#000';
+        setTimeout(() => {
+        const tdElements = document.querySelectorAll('.todo-container table tbody tr td');
+        if (tdElements.length > 0) {
+            tdElements.forEach(td => {
+            td.style.color = '#fff';
+            });
+        } else {
+            console.error('No td elements were found in the DOM.');
+        }
+        }, 1000); // Adjust the delay as needed
     }
 
 }
@@ -511,3 +558,43 @@ function updateHoursCount(savedSettings) {
     console.log('savedSettings.pomodoro',savedSettings.pomodoro,totalPomodoros)
     document.getElementById('hoursCount').textContent = `(${totalHours.toFixed(1)}h)`; // Display hours with 1 decimal place
 }
+
+
+
+// MEDIA SCREEN JS
+
+function removeInlineStylesForMobile() {
+    
+    const pomodoroContainer = document.querySelector('.pomodoro-timer-container');
+    const mainDiv = document.querySelector('.maindiv');
+    // Check if the screen width is less than or equal to 767px (mobile screen)
+    if (window.outerWidth <= 767) {
+
+      // Remove or modify inline styles
+      if (pomodoroContainer) {
+        pomodoroContainer.style.minWidth = ''; // Remove min-width
+        pomodoroContainer.style.minHeight = ''; // Remove min-height
+      }
+
+      if (mainDiv) {
+        mainDiv.style.width = ''; // Remove background color
+      }
+
+    console.log('removeInlineStylesForMobile called');
+    }else{
+        if (pomodoroContainer) {
+            pomodoroContainer.style.minWidth = '1900px'; // Remove min-width
+            pomodoroContainer.style.minHeight = '800px'; // Remove min-height
+          }
+    
+          if (mainDiv) {
+            mainDiv.style.width = '566px'; // Remove background color
+          }
+    }
+  }
+
+  // Call the function when the page loads
+  window.addEventListener('load', removeInlineStylesForMobile);
+
+  // Call the function when the window is resized
+  window.addEventListener('resize', removeInlineStylesForMobile);

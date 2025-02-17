@@ -18,7 +18,7 @@
       </div>
    </div>
    <div class="runningDiv">
-      <p>#1</p>
+      <p>Tasks</p>
       <span id="running-task"></span>
    </div>
    <div class="todo-container">

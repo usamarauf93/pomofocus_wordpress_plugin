@@ -54,7 +54,7 @@ function pomodoro_timer_enqueue_assets() {
         // Pass settings to JS
         wp_localize_script('pomodoro-timer-script', 'pomodoroTimerSettings', array(
             'colorTheme' => [
-                'theme1' => 'rgb(186, 73, 73)',
+                'theme1' => '#38b6ff',
                 'theme2' => 'rgb(56, 133, 138)',
                 'theme3' => 'rgb(57, 112, 151)'
             ],

@@ -217,7 +217,7 @@
             </label>
           </div>
         </div>
-        <div class="time-mins-section">
+        <!-- <div class="time-mins-section">
             <div class="wrapper-spacing">
                <div class="top-headingz">
                   <span class="heading-aligned-spacing">Small Window</span>
@@ -226,7 +226,7 @@
                   Open <i class="fa-solid fa-up-right-from-square"></i>
                </button>
             </div>
-         </div>
+         </div> -->
       </div>
       
       <!-- <div class="divider-line"></div> -->
