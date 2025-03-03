@@ -28,6 +28,16 @@ alarmSound = new Audio(pomodoroTimerSettings.alarm);
 const settingsButton = document.getElementById('settingsButton');
 // const settingsModal = document.getElementById('settingsModal');
 const closeSettingsModal = document.getElementById('closeSettingsModal');
+const defaultSettings = {
+    pomodoro: 25,
+    shortBreak: 5,
+    longBreak: 15,
+    colorTheme: pomodoroTimerSettings.colorTheme,
+    tickingSound: pomodoroTimerSettings.tickSlow,
+    alarmSound:pomodoroTimerSettings.alarm,
+    tickSoundVolume:50,
+    alarmSoundVolume:50
+};
 var formattedTimerType = '';
 
 let editingRow = null;
@@ -163,17 +173,6 @@ taskTableBody.addEventListener('click', (event) => {
     }
 });
 function loadSettings() {
-    const defaultColor = pomodoroTimerSettings.colorTheme;
-    const defaultSettings = {
-        pomodoro: 25,
-        shortBreak: 5,
-        longBreak: 15,
-        colorTheme: defaultColor,
-        tickingSound: pomodoroTimerSettings.tickSlow,
-        alarmSound:pomodoroTimerSettings.alarm,
-        tickSoundVolume:50,
-        alarmSoundVolume:50
-    };
 
     // Retrieve saved settings from localStorage or use defaults
     const savedSettings = JSON.parse(localStorage.getItem('pomodoroSettings')) || defaultSettings;
@@ -253,7 +252,7 @@ document.querySelectorAll('.tab').forEach((tab, index, tabs) => {
 // Function to switch tab based on index
 function switchTab(index) {
     tickSound.pause();
-    document.getElementById('forwardButton').style.display = 'none';
+    // document.getElementById('forwardButton').style.display = 'none';
     const tabs = document.querySelectorAll('.tab');
 
     // Remove active class from all tabs
@@ -507,13 +506,6 @@ increasePomodoro.addEventListener('click', () => {
 
 
 function updateFinishAt(taskPomodoros, pomodoroDuration) {
-    const defaultSettings = {
-        pomodoro: 25,
-        shortBreak: 5,
-        longBreak: 15,
-        timeFormat:'12-hour'
-    };
-
     const savedSettings = JSON.parse(localStorage.getItem('pomodoroSettings')) || defaultSettings;
 
     // Convert pomodoroDuration (HH:MM) to total minutes

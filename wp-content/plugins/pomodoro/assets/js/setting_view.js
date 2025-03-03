@@ -155,10 +155,10 @@ document.addEventListener('DOMContentLoaded', () => {
         // Set volume display
         const alarmSoundDisplay = document.getElementById('alarmSoundDisplay');
         alarmSoundDisplay.innerText = savedSettings.alarmSoundVolume;
-        document.getElementById('myRange').value = savedSettings.tickingSoundVolume;
+        document.getElementById('myRange').value = savedSettings.alarmSoundVolume;
     
         const tickingSoundDisplay = document.getElementById('tickingSoundDisplay');
-        alarmSoundDisplay.innerText = savedSettings.tickingSoundVolume;
+        tickingSoundDisplay.innerText = savedSettings.tickingSoundVolume;
         document.getElementById('myRange2').value = savedSettings.tickingSoundVolume;
     }
 

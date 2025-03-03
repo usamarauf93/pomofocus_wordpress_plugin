@@ -11,6 +11,7 @@
     }
     .settingModal {
     font-size: 15px;
+    padding: 0px 8% 0 8%;
     color: rgb(132, 127, 127);
     text-transform: uppercase;
     font-weight: bold;
@@ -20,7 +21,10 @@
       padding:0px !important;
       
     }
-   
+    .ast-container, .ast-container-fluid{
+      padding-right: 0px !important;
+      padding-left: 0px !important;
+    }
     .settingP{
     font-size: 15px;
     color: rgb(170, 170, 170);
@@ -202,9 +206,9 @@
       user-select: none;
       border-radius: 4px;
       background-color: rgb(235, 235, 235);
-      padding: 12px;
+      padding: 8px;
       box-sizing: border-box;
-      font-size: 14px;
+      font-size: 12px;
     }
     .dropdown-padding {
     cursor: pointer;
